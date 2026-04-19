@@ -54,9 +54,9 @@ function Backdrop() {
 function Navbar() {
   const [open, setOpen] = useState(false);
   const links = [
+    { label: 'DataPilot', href: '#datapilot' },
     { label: 'Work', href: '#work' },
     { label: 'Experience', href: '#experience' },
-    { label: 'About', href: '#about' },
     { label: 'Contact', href: '#contact' },
   ];
 
@@ -137,14 +137,14 @@ function Hero() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="liquid-glass rounded-full px-1 py-1 inline-flex items-center gap-2 mb-8"
           >
-            <span className="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold font-body">2026</span>
-            <span className="text-white text-xs font-body pr-3">Open to remote UK AI Engineer roles.</span>
+            <span className="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold font-body">Open</span>
+            <span className="text-white text-xs font-body pr-3">Hybrid London or fully remote AI Engineer roles.</span>
           </motion.div>
 
           <BlurText
-            text="I build AI tools that non-technical people actually use."
+            text="Production LLM systems on enterprise data."
             delay={90}
-            className="text-5xl md:text-6xl lg:text-[5.25rem] font-heading italic text-white leading-[0.9] max-w-4xl"
+            className="text-5xl md:text-6xl lg:text-[5.5rem] font-heading italic text-white leading-[0.9] max-w-4xl"
             style={{ letterSpacing: '-2px' }}
           />
 
@@ -154,9 +154,10 @@ function Hero() {
             transition={{ delay: 0.9, duration: 0.6 }}
             className="mt-6 text-sm md:text-base text-white/70 font-body font-light leading-relaxed max-w-xl"
           >
-            Eight-plus years in data. Now shipping production LLM applications, agentic workflows,
-            and the data infrastructure underneath. Creator of DataPilot and Unthread. Based in
-            Newcastle, UK.
+            AI Engineer inside a 400-person regulated manufacturer (aerospace, defence, medical).
+            Builder of <span className="text-white">DataPilot</span> — a text-to-SQL agent with a
+            self-correcting Expert / Tester loop serving 150+ business users against live Oracle IFS
+            and SQL Server. 8+ years across Python, SQL, and cloud data engineering.
           </motion.p>
 
           <motion.div
@@ -166,10 +167,10 @@ function Hero() {
             className="mt-8 flex flex-wrap items-center gap-4"
           >
             <a
-              href="#work"
+              href="#datapilot"
               className="liquid-glass-strong rounded-full px-6 py-3 text-white font-body text-sm font-medium flex items-center gap-2 hover:bg-white/5 transition-colors"
             >
-              See Selected Work
+              See DataPilot Architecture
               <ArrowUpRight className="h-4 w-4" />
             </a>
             <a
@@ -209,56 +210,157 @@ function Hero() {
   );
 }
 
-// ---------- SELECTED WORK ----------
+// ---------- FLAGSHIP: DATAPILOT ----------
+function DataPilot() {
+  const stats = [
+    { v: '150+', l: 'Business users in Sales, Ops, Finance' },
+    { v: '~90%', l: 'First-pass SQL accuracy via Tester loop' },
+    { v: '< 5s', l: 'Median query latency' },
+    { v: '400', l: 'Person regulated manufacturer' },
+  ];
+
+  const sections = [
+    {
+      label: 'What it does',
+      body: 'Lets 150–200 non-technical users across Sales, Ops, and Finance query live Oracle IFS and SQL Server data in natural language — nearly half of a 400-person business.',
+    },
+    {
+      label: 'Architecture',
+      body: 'Two-agent system. An Expert agent generates SQL from schema-aware prompts; a Tester agent validates syntax, executes against a sandboxed read replica, inspects result shape, and loops corrections back before surfacing output.',
+    },
+    {
+      label: 'Why this pattern',
+      body: 'Expert / Tester over single-shot generation and over a full ReAct loop. Single-shot fails quietly on schema edge cases; ReAct burns tokens on reasoning better expressed as a deterministic validation step. The Tester loop closes the accuracy gap where it matters — valid SQL against a real schema — without paying ReAct’s latency and cost.',
+    },
+    {
+      label: 'Guardrails',
+      body: 'Read-only enforcement at the connection layer, row limits, query-timeout fallback, and graceful degradation when the Tester cannot validate inside the retry budget. Schema snapshots versioned so prompt changes and schema changes are auditable.',
+    },
+  ];
+
+  const stack = ['Python', 'Streamlit', 'Claude API', 'GPT API', 'Oracle IFS', 'SQL Server', 'Custom query telemetry'];
+
+  return (
+    <section id="datapilot" className="relative overflow-hidden py-32 px-6 md:px-16">
+      <div className="absolute inset-0 z-0 scene-ambient opacity-70" />
+      <div className="absolute inset-0 z-0 scene-stars stars-drift opacity-30" />
+
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="mb-14">
+          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
+            <span className="text-xs font-medium text-white font-body">Flagship Project</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9] max-w-3xl">
+            DataPilot — text-to-SQL with a self-correcting Expert / Tester loop.
+          </h2>
+          <p className="mt-6 text-white/65 font-body font-light text-sm md:text-base max-w-2xl leading-relaxed">
+            The flagship AI product at Harwin. A two-agent system that turns plain English into
+            validated SQL against live Oracle IFS and SQL Server, with real guardrails and real
+            telemetry.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+          {stats.map((s, i) => (
+            <motion.div
+              key={s.l}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="liquid-glass rounded-2xl p-6"
+            >
+              <div className="text-4xl md:text-5xl font-heading italic text-white leading-none">{s.v}</div>
+              <div className="mt-3 text-white/55 font-body font-light text-xs leading-relaxed">{s.l}</div>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {sections.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: i * 0.06 }}
+              className="liquid-glass rounded-2xl p-7"
+            >
+              <div className="text-white/45 font-body text-xs uppercase tracking-widest mb-3">
+                {s.label}
+              </div>
+              <p className="text-white/85 font-body font-light text-sm md:text-base leading-relaxed">
+                {s.body}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex flex-wrap gap-2">
+          {stack.map((t) => (
+            <span
+              key={t}
+              className="liquid-glass rounded-full px-3.5 py-1.5 text-white/80 font-body text-xs"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- ALSO SHIPPED ----------
 function Work() {
   const projects = [
     {
       n: '01',
       year: '2024',
-      title: 'DataPilot',
-      body: 'AI query engine that turns plain English into SQL across Oracle and SQL Server. Expert/Tester agent loop: one agent generates, a second validates and self-corrects before execution. Deployed as a Streamlit app inside Harwin\u2019s production data stack, in daily use by non-technical staff.',
-      pills: ['Python', 'Claude / GPT APIs', 'Agentic loop', 'Streamlit', 'Oracle', 'SQL Server'],
+      title: 'Harwin AI Insider',
+      body: '24-week internal LLM enablement platform serving all 400 staff. Measurable increase in internal AI-tool adoption and a drop in ad-hoc data requests.',
+      pills: ['Python pipeline', 'HTML / CSS', 'GitHub Pages', 'Enablement'],
+      href: 'https://harwin-1.github.io/harwin-ai-insider/',
     },
     {
       n: '02',
-      year: '2025',
-      title: 'Unthread',
-      body: 'Consumer AI product for guided self-therapy, built around the Wolynn Core Language Approach to intergenerational trauma work. Custom AI companion (Maya) with a bespoke system prompt. Full product architecture covering data persistence, an interactive body map, and monetisation.',
-      pills: ['Next.js', 'Tailwind', 'LLM API', 'Prompt engineering', 'Product architecture'],
+      year: '2024',
+      title: 'MCP Server for Claude Desktop',
+      body: 'Custom Anthropic MCP server exposing the MySQL warehouse as tools inside Claude Desktop. Conversational access to pipeline and operational data without opening a BI tool.',
+      pills: ['MCP', 'Claude Desktop', 'MySQL', 'Tool use'],
       href: null,
     },
     {
       n: '03',
-      year: '2024',
-      title: 'Harwin AI Insider',
-      body: 'Internal newsletter and enablement platform helping a 200-person precision manufacturer get practical value from LLMs. 24-week content pipeline with HTML email templating and GitHub Pages deployment.',
-      pills: ['Python pipeline', 'HTML / CSS', 'GitHub Pages', 'LLM enablement'],
-      href: 'https://harwin-1.github.io/harwin-ai-insider/',
+      year: '2023 — 2025',
+      title: 'Data Platform Rebuild',
+      body: 'AWS Data Lake + Snowflake analytical layer consolidating ERP, CRM, and distributor sources. Distributor POS rebuilt from a full-day Access/SQL/R/Python/Excel patchwork into a single Python pipeline under 5 minutes. One critical reporting process cut from 24 hours to 30.',
+      pills: ['AWS', 'Snowflake', 'Python', 'n8n', 'ETL'],
+      href: null,
     },
   ];
 
   return (
     <section id="work" className="relative overflow-hidden py-32 px-6 md:px-16">
-      <div className="absolute inset-0 z-0 scene-ambient opacity-60" />
-      <div className="absolute inset-0 z-0 scene-stars stars-drift opacity-30" />
+      <div className="absolute inset-0 z-0 scene-stars opacity-20 twinkle" />
 
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-start">
         <div className="md:w-1/2 md:sticky md:top-32">
           <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">Selected Work</span>
+            <span className="text-xs font-medium text-white font-body">Also Shipped</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9]">
-            Three projects. All shipped. All in use.
+            The rest of the surface area.
           </h2>
           <p className="mt-5 text-white/60 font-body font-light text-sm md:text-base max-w-md leading-relaxed">
-            I'd rather show work I'm genuinely proud of than pad the list. Each of these made a
-            real difference to a real team.
+            DataPilot doesn't exist in isolation. It sits on a data platform and alongside the
+            enablement work that taught 400 people how to actually use AI at work.
           </p>
           <a
             href="mailto:navendra8@gmail.com?subject=Hi%20Nav"
             className="mt-8 liquid-glass-strong rounded-full px-6 py-3 text-white font-body text-sm font-medium inline-flex items-center gap-2"
           >
-            Talk About Your Project
+            Talk About Your Problem
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
@@ -316,12 +418,12 @@ function Work() {
 function Philosophy() {
   const rows = [
     {
-      title: 'Adoption first. Demos second.',
-      body: 'The demo is the easy part. The hard part is the tool a colleague opens on a Tuesday morning at 9am and actually uses. I think about who the user is, what happens when the model is wrong, and whether it still works a month later.',
+      title: 'Pick the simplest architecture that closes the real gap.',
+      body: 'Single-shot generation, Expert / Tester, full ReAct — they all "work" in a demo. The question is which one closes the actual failure mode for this problem. For DataPilot it was valid SQL against a real schema, so a deterministic validation step beats open-ended reasoning. Match the pattern to the gap, not to fashion.',
     },
     {
-      title: 'Boring infrastructure is where trust lives.',
-      body: 'Database migrations, retry logic, monitoring — the unglamorous layer under the AI. If that layer is flaky, the cleverest model in the world gets abandoned in two weeks. I own that layer because nothing else matters without it.',
+      title: 'Guardrails are part of the product.',
+      body: 'Read-only connections, row limits, query-timeout fallback, graceful degradation, versioned schema snapshots. These are not polish — they’re what lets an LLM touch a production database without becoming a liability. Ship them alongside the model, not after.',
     },
   ];
 
@@ -334,10 +436,10 @@ function Philosophy() {
             <span className="text-xs font-medium text-white font-body">What I Care About</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9] max-w-2xl">
-            Most AI projects fail in the gap between a demo and something a business will actually use every day.
+            Architecture is a judgment call. Guardrails are a feature.
           </h2>
           <p className="mt-6 text-white/60 font-body font-light text-sm md:text-base max-w-xl leading-relaxed">
-            I spend more time than most people on that gap. Here's how it shows up in the work.
+            Two convictions shaped every production LLM decision I’ve made at Harwin.
           </p>
         </div>
 
@@ -379,51 +481,59 @@ function Experience() {
     {
       dates: 'Sep 2023 — Present',
       role: 'Data Engineer & AI Builder',
-      company: 'Harwin plc',
-      note: 'Primary builder of AI tooling and automated data infrastructure. DataPilot (plain-English-to-SQL with Expert/Tester agent loop), an MCP server integrated with Claude Desktop for conversational data analysis, EDI pipelines processing POS data from Avnet, TTI and Digikey, the Bookings/Billings report delivered to the CFO (current version 29), Power BI pipeline monitoring via MCP, and Streamlit/Altair dashboards on Snowflake.',
+      company: 'Harwin — UK',
+      note: 'Sole builder of the AI product surface and primary engineer on the automated data platform, delivering directly into Finance Leadership. DataPilot (flagship), a custom Anthropic MCP server exposing the MySQL warehouse inside Claude Desktop, the Harwin AI Insider 24-week enablement programme for all 400 staff, n8n-driven automated analytics pipelines (up to 95% turnaround reduction), AWS Data Lake + Snowflake consolidating ERP/CRM/distributor sources, and the distributor POS rebuild (full-day patchwork → single Python pipeline under 5 minutes). Tableau and Streamlit executive KPI dashboards. Data integrity, validation and governance across the analytics function.',
     },
     {
       dates: 'Oct 2022 — Apr 2023',
       role: 'Data Insight Manager',
-      company: 'Brittany Ferries',
-      note: 'Deep-dive studies on acquisition, retention and revenue growth across digital and commercial channels. Python pipelines combining web-scraped competitor pricing with NLP sentiment. Mentored a team of analysts.',
+      company: 'Brittany Ferries — UK',
+      note: 'UK–France ferry operator, £450m+ revenue. Deep-dive studies on acquisition, retention and revenue growth. Python pipelines combining web-scraped competitor pricing with NLP sentiment into a single commercial-intelligence view. Mentored a team of analysts.',
     },
     {
       dates: 'Oct 2021 — Oct 2022',
       role: 'Data Insight Manager',
-      company: 'ICS-Digital',
-      note: 'End-to-end analytics across concurrent Marketing and Product campaigns. Twitter scraping + sentiment pipeline whose findings were published in multiple high-profile news articles. Managed and mentored a team of 5+.',
+      company: 'ICS-Digital — Leeds, UK',
+      note: 'End-to-end analytics across concurrent Marketing and Product campaigns. Twitter scraping + sentiment pipeline whose findings were published across multiple high-profile news articles. Shipped automation that improved analytics processing efficiency by 40%+. Managed 5+ analysts and tech executives.',
     },
     {
       dates: 'Jan 2020 — Oct 2021',
-      role: 'Senior Data Analyst',
-      company: 'GIP Technologies',
-      note: 'Pricing recommendation engine for hospitality using k-means for segment-based pricing. Customer segmentation models identifying new monetisation opportunities. CI with Jenkins, testing with Mockito.',
+      role: 'Data Analyst',
+      company: 'GIP Technologies — Jaipur, India',
+      note: 'Pricing recommendation engine using k-means clustering for segment-based pricing across hotel segments. Customer segmentation models identifying new user segments and monetisation opportunities.',
     },
     {
       dates: 'Mar 2017 — Aug 2019',
       role: 'Data Analyst',
-      company: 'GK Telecom',
-      note: 'Trend prediction models in Python for merchandising and inventory. End-to-end data prep, normalisation and predictive modelling across sales and market data.',
+      company: 'GK Telecom — Edinburgh, UK',
+      note: 'Trend prediction models in Python for merchandising and inventory. End-to-end data preparation, normalisation and predictive modelling; evaluated and validated models to improve accuracy.',
     },
   ];
 
   const stackGroups = [
     {
-      label: 'AI & LLM',
-      items: ['LLM APIs (Claude, GPT)', 'Prompt engineering', 'Agentic workflows', 'MCP protocol', 'RAG', 'LLM evaluation', 'Streamlit'],
+      label: 'AI & LLM Engineering',
+      items: ['Claude API', 'OpenAI API', 'Anthropic MCP', 'Expert / Tester loops', 'Prompt engineering', 'Structured outputs', 'Tool use', 'RAG', 'LLM evaluation', 'Guardrails', 'Token & cost optimisation', 'Query telemetry'],
     },
     {
-      label: 'Data Engineering',
-      items: ['Python (pandas, Selenium, COM)', 'SQL Server', 'Oracle', 'MySQL', 'Snowflake', 'ETL pipelines', 'EDI', 'AWS'],
+      label: 'Automation & Data Engineering',
+      items: ['n8n', 'Python', 'AWS Data Lake', 'Snowflake', 'ETL / ELT', 'Data modelling', 'EDI', 'Integrity & validation frameworks'],
     },
     {
       label: 'Analytics & BI',
-      items: ['Power BI', 'DAX', 'Tableau', 'KPI dashboards', 'Predictive modelling', 'Segmentation (k-means)', 'NLP / sentiment'],
+      items: ['SQL', 'Tableau', 'Power BI', 'Amazon QuickSight', 'Streamlit', 'KPI dashboards', 'GTM analytics'],
     },
     {
-      label: 'Product & Delivery',
-      items: ['Next.js', 'Tailwind', 'Full-stack AI products', 'Git', 'Jira', 'Stakeholder management'],
+      label: 'ML & Advanced Analytics',
+      items: ['Predictive modelling', 'Forecasting', 'Segmentation (clustering)', 'NLP / sentiment', 'Statistical analysis'],
+    },
+    {
+      label: 'Data Collection & Integration',
+      items: ['Selenium', 'BeautifulSoup', 'Scrapy', 'REST APIs', 'Structured & unstructured data'],
+    },
+    {
+      label: 'Databases & Storage',
+      items: ['Snowflake', 'MySQL', 'Microsoft SQL Server', 'Oracle IFS', 'MS Access'],
     },
   ];
 
@@ -445,7 +555,7 @@ function Experience() {
             <span className="text-xs font-medium text-white font-body">Experience</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9]">
-            Eight years. SQL to agents.
+            Eight-plus years. SQL to agents.
           </h2>
         </div>
 
@@ -499,6 +609,33 @@ function Experience() {
             ))}
           </div>
         </div>
+
+        <div className="mt-16">
+          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
+            <span className="text-xs font-medium text-white font-body">Education & Certifications</span>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="liquid-glass rounded-2xl p-6">
+              <div className="text-xl font-heading italic text-white">
+                MSc Information Technology (Business)
+              </div>
+              <div className="mt-1 text-white/60 font-body text-sm">
+                Heriot-Watt University, Edinburgh · 2012 – 2013
+              </div>
+            </div>
+            <div className="liquid-glass rounded-2xl p-6">
+              <div className="text-white/50 font-body text-xs uppercase tracking-widest mb-3">
+                Certifications
+              </div>
+              <ul className="text-white/80 font-body font-light text-sm space-y-1.5">
+                <li>AWS Certified Machine Learning Engineer (Associate) — in progress</li>
+                <li>Google Cloud Generative AI — Vertex AI, Prompt Design, GSP519</li>
+                <li>Microsoft Certified: Introduction to Programming Using Python (MTA)</li>
+                <li>Python with Data Science — Grras Solution Pvt.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -525,8 +662,8 @@ function CtaFooter() {
               Let's talk.
             </h2>
             <p className="mt-6 text-white/60 font-body font-light text-sm md:text-base max-w-md leading-relaxed">
-              Best reached by email or LinkedIn. I reply the same day. Open to remote UK AI Engineer
-              roles and to conversations about interesting problems.
+              Best reached by email or LinkedIn. I reply the same day. Open to hybrid London or
+              fully remote AI Engineer roles, and to conversations about interesting problems.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -579,6 +716,7 @@ export default function App() {
         <Navbar />
         <Hero />
         <div className="bg-black">
+          <DataPilot />
           <Work />
           <Philosophy />
           <Experience />
