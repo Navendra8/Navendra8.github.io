@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporting Automation — Navendra Singh</title>
+<meta name="description" content="48 hours to 30 minutes. End-to-end automation of a business-critical reporting process.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+<div class="container">
+<a href="../" class="name">Navendra Singh</a>
+<nav>
+<a href="../">Home</a>
+<a href="../projects.html" class="active">Projects</a>
+<a href="../experience.html">Experience</a>
+<a href="../about.html">About</a>
+<a href="../contact.html">Contact</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="narrow">
+<span class="eyebrow">Reporting Automation · 2023</span>
+<h1>48-hour reporting cycle, now 30 minutes.</h1>
+<p class="lede">End-to-end automation of a business-critical process that used to consume two working days and now runs before the morning coffee. Same-day decisions for the CFO and Chief Accountant.</p>
+</div>
+</section>
+
+<div class="narrow project-body">
+
+<div class="project-meta">
+<div class="meta-item">
+<span class="label">Role</span>
+<span class="value">Sole builder</span>
+</div>
+<div class="meta-item">
+<span class="label">Stack</span>
+<span class="value">Python · SQL Server · Excel automation</span>
+</div>
+<div class="meta-item">
+<span class="label">Result</span>
+<span class="value">95% reduction in turnaround</span>
+</div>
+</div>
+
+<h2>The problem</h2>
+<p>A critical reporting process involving the Bookings and Billings view used by the CFO and Chief Accountant was taking two working days end-to-end. Multiple data sources, manual Excel work, complex SUMIFS, NETWORKDAYS and EOMONTH logic across four separate reporting views, cross-checks, emails. By the time decisions could be made, the numbers were already aging.</p>
+
+<h2>The approach</h2>
+<p>I rebuilt the pipeline end-to-end. A Python script pulls live from SQL Server, applies all the calculation logic natively in code rather than in nested Excel formulas, populates the Excel template staff already recognised, and delivers the finished report by email on a schedule.</p>
+
+<p>The design constraint that mattered most: the finance team didn't want a new tool. They wanted the same output, faster. So the output format stayed identical — same template, same columns, same presentation. Everything that changed was upstream.</p>
+
+<h2>Why this was harder than it looks</h2>
+<p>The interesting part wasn't the Python. It was the domain — understanding exactly what "bookings vs billings" meant in this business, which edge cases mattered (order cancellations, partial shipments, multi-currency), and where the existing manual process was silently compensating for data issues upstream.</p>
+
+<p>A pure technical implementation would have produced wrong numbers the finance team would have rejected. The real work was sitting with them, watching them work, asking why each step existed, and then codifying that.</p>
+
+<h2>Result</h2>
+<p>48 hours to 30 minutes. Same-day data-driven decisions became possible. More importantly, the finance team stopped losing two days a week to a process they didn't enjoy doing.</p>
+
+<p>This wasn't an AI project. It's here because it's the work I'm most proud of — the unglamorous kind that actually moves the needle.</p>
+
+<div class="button-group">
+<a href="../contact.html" class="button">Ask me about it</a>
+</div>
+
+<div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+<p style="font-size: 14px; color: var(--text-muted);">← <a href="../projects.html">All projects</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer class="site-footer">
+<div class="container">
+<div class="links">
+<a href="mailto:navendra8@gmail.com">Email</a>
+<a href="https://linkedin.com/in/navendra-singh">LinkedIn</a>
+<a href="https://github.com/Navendra8">GitHub</a>
+</div>
+<div class="location">Newcastle, UK · © 2026</div>
+</div>
+</footer>
+
+</body>
+</html>

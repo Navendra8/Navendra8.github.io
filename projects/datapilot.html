@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataPilot — Navendra Singh</title>
+<meta name="description" content="Plain-English-to-SQL engine with a self-correcting Expert/Tester agent loop.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+<div class="container">
+<a href="../" class="name">Navendra Singh</a>
+<nav>
+<a href="../">Home</a>
+<a href="../projects.html" class="active">Projects</a>
+<a href="../experience.html">Experience</a>
+<a href="../about.html">About</a>
+<a href="../contact.html">Contact</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="narrow">
+<span class="eyebrow">DataPilot · 2024</span>
+<h1>Plain-English to SQL, with an agent loop that knows when it's wrong.</h1>
+<p class="lede">Built so non-technical staff across Sales, Operations, and Finance could query business data without writing SQL or waiting on an analyst.</p>
+</div>
+</section>
+
+<div class="narrow project-body">
+
+<div class="project-meta">
+<div class="meta-item">
+<span class="label">Role</span>
+<span class="value">Sole builder</span>
+</div>
+<div class="meta-item">
+<span class="label">Stack</span>
+<span class="value">Python · Claude API · Streamlit · SQL Server</span>
+</div>
+<div class="meta-item">
+<span class="label">Status</span>
+<span class="value">In daily production use</span>
+</div>
+</div>
+
+<h2>The problem</h2>
+<p>Business users needed data but didn't write SQL. Traditional BI tools were too rigid; analyst bandwidth was finite. Generic text-to-SQL tools hallucinated column names the moment the schema grew past a handful of tables.</p>
+
+<h2>The approach</h2>
+<p>Two agents in a loop, collaborating on every query:</p>
+<ul>
+<li><strong>Expert agent</strong> receives the user's question and schema documentation, generates a SQL query.</li>
+<li><strong>Tester agent</strong> receives the generated SQL and validates it against the schema before execution — catching missing joins, non-existent columns, wrong aggregations.</li>
+<li>If the Tester fails the SQL, its feedback becomes context for the Expert's next attempt. Up to three retries.</li>
+</ul>
+
+<p>The loop terminates when the Tester passes and the SQL executes cleanly, or returns a clear failure message with the full reasoning trace.</p>
+
+<h2>Why two agents, not one</h2>
+<p>A single agent asked to "generate and verify" conflates two different modes of thinking. Separation has three concrete benefits: the Tester can be stricter without compromising the Expert's generative freedom; failures are attributable (you know whether the Expert is hallucinating or the Tester is over-rejecting); and you can swap in a smaller, cheaper model for the Tester once the pattern is validated.</p>
+
+<h2>What worked</h2>
+<p>The reasoning trace panel turned out to be the feature staff cared about most. When SQL failed, they could read the Tester's feedback and understand why. When it succeeded, they could see the SQL and start learning the patterns. It turned DataPilot from a black box into a teaching tool.</p>
+
+<h2>What I'd change</h2>
+<p>The current version stuffs the full schema into every prompt. That works at eight tables and breaks at fifty. The v2 upgrade I'm building now is RAG over indexed schema documentation — retrieve only the slices relevant to the question, cut token usage, improve accuracy on ambiguous queries.</p>
+
+<h2>See the code</h2>
+<p>A sanitised demo version using a fictional Northfield Instruments dataset is open-source on GitHub:</p>
+
+<div class="button-group">
+<a href="https://github.com/Navendra8/datapilot-demo" class="button">View on GitHub</a>
+<a href="../contact.html" class="button">Ask me about it</a>
+</div>
+
+<div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+<p style="font-size: 14px; color: var(--text-muted);">← <a href="../projects.html">All projects</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer class="site-footer">
+<div class="container">
+<div class="links">
+<a href="mailto:navendra8@gmail.com">Email</a>
+<a href="https://linkedin.com/in/navendra-singh">LinkedIn</a>
+<a href="https://github.com/Navendra8">GitHub</a>
+</div>
+<div class="location">Newcastle, UK · © 2026</div>
+</div>
+</footer>
+
+</body>
+</html>
