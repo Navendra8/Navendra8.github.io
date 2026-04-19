@@ -200,7 +200,9 @@ function Hero() {
             <span className="w-1 h-1 rounded-full bg-[color:var(--muted)]" />
             <span>8+ years in data</span>
             <span className="w-1 h-1 rounded-full bg-[color:var(--muted)]" />
-            <span>Python · SQL · Claude / GPT · MCP</span>
+            <a href="/terminal/" className="font-mono text-[color:var(--ink)] underline decoration-dotted underline-offset-4 hover:text-[color:var(--tile-terracotta)] transition-colors">
+              $ /terminal →
+            </a>
           </div>
         </div>
 

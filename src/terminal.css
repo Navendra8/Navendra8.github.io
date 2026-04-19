@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg:      #0B0E14;
+  --bg-2:    #0F1320;
+  --fg:      #D7DCE5;
+  --muted:   #6B7486;
+  --dim:     #4A5263;
+  --accent:  #7CE38B;     /* CRT green */
+  --warn:    #F2C94C;
+  --err:     #F07178;
+  --link:    #82AAFF;
+  --selection: rgba(124,227,139,0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+}
+
+body {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'zero' on, 'ss02' on;
+  line-height: 1.55;
+}
+
+::selection { background: var(--selection); color: #fff; }
+
+/* Subtle scanline and vignette for CRT mood */
+.scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.01) 0px,
+    rgba(255,255,255,0.01) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 1;
+}
+.vignette::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.45) 100%);
+  z-index: 1;
+}
+
+.caret {
+  display: inline-block;
+  width: 0.6em;
+  background: var(--accent);
+  color: var(--accent);
+  margin-left: 1px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+
+.text-accent { color: var(--accent); }
+.text-muted  { color: var(--muted); }
+.text-dim    { color: var(--dim); }
+.text-warn   { color: var(--warn); }
+.text-err    { color: var(--err); }
+.text-link   { color: var(--link); }
+
+a.link { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+a.link:hover { color: #B6CCFF; }
+
+/* Make the whole screen feel like a single terminal */
+.terminal-shell {
+  position: relative;
+  z-index: 2;
+  min-height: 100%;
+  padding: 24px 20px 160px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.terminal-shell pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+input.prompt-input {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  caret-color: var(--accent);
+}
+
+.chip {
+  display: inline-block;
+  border: 1px solid rgba(215,220,229,0.18);
+  color: var(--fg);
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin: 2px 4px 2px 0;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: linear-gradient(to bottom, rgba(11,14,20,0.95), rgba(11,14,20,0.8) 70%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.lights { display: flex; gap: 6px; }
+.light  { width: 12px; height: 12px; border-radius: 50%; }
+.light-r { background: #FF6057; border: 1px solid rgba(0,0,0,0.2); }
+.light-y { background: #FFBD2E; border: 1px solid rgba(0,0,0,0.2); }
+.light-g { background: #28CA42; border: 1px solid rgba(0,0,0,0.2); }
+
+.titlebar {
+  flex: 1;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.mobile-hint {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  z-index: 4;
+  background: rgba(11,14,20,0.9);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 10px 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.mobile-hint button {
+  flex: 0 0 auto;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.mobile-hint button:hover { background: rgba(255,255,255,0.08); }
