@@ -154,8 +154,9 @@ function Hero() {
             transition={{ delay: 0.9, duration: 0.6 }}
             className="mt-6 text-sm md:text-base text-white/70 font-body font-light leading-relaxed max-w-xl"
           >
-            Eight years in data. Now shipping production LLM applications, agentic workflows, and the
-            infrastructure underneath. Currently at a precision manufacturer in Newcastle, UK.
+            Eight-plus years in data. Now shipping production LLM applications, agentic workflows,
+            and the data infrastructure underneath. Creator of DataPilot and Unthread. Based in
+            Newcastle, UK.
           </motion.p>
 
           <motion.div
@@ -215,22 +216,24 @@ function Work() {
       n: '01',
       year: '2024',
       title: 'DataPilot',
-      body: 'Plain-English-to-SQL engine with a self-correcting Expert/Tester agent loop. In daily use by non-technical staff across Sales, Ops, and Finance.',
-      pills: ['Python', 'Claude API', 'Streamlit', 'SQL Server', 'Agentic'],
+      body: 'AI query engine that turns plain English into SQL across Oracle and SQL Server. Expert/Tester agent loop: one agent generates, a second validates and self-corrects before execution. Deployed as a Streamlit app inside Harwin\u2019s production data stack, in daily use by non-technical staff.',
+      pills: ['Python', 'Claude / GPT APIs', 'Agentic loop', 'Streamlit', 'Oracle', 'SQL Server'],
     },
     {
       n: '02',
-      year: '2024',
-      title: 'Harwin AI Insider',
-      body: '24-week internal LLM enablement programme for a 200-person manufacturer. A bet that sustained practical content beats one-off training.',
-      pills: ['Python', 'HTML/CSS', 'GitHub Pages', 'LLM enablement'],
+      year: '2025',
+      title: 'Unthread',
+      body: 'Consumer AI product for guided self-therapy, built around the Wolynn Core Language Approach to intergenerational trauma work. Custom AI companion (Maya) with a bespoke system prompt. Full product architecture covering data persistence, an interactive body map, and monetisation.',
+      pills: ['Next.js', 'Tailwind', 'LLM API', 'Prompt engineering', 'Product architecture'],
+      href: null,
     },
     {
       n: '03',
-      year: '2023',
-      title: '48-hour reporting, now 30 minutes',
-      body: 'End-to-end automation of a critical reporting process delivered to the CFO. 95% faster, same-day decisions.',
-      pills: ['Python', 'SQL Server', 'Excel automation', 'Scheduled'],
+      year: '2024',
+      title: 'Harwin AI Insider',
+      body: 'Internal newsletter and enablement platform helping a 200-person precision manufacturer get practical value from LLMs. 24-week content pipeline with HTML email templating and GitHub Pages deployment.',
+      pills: ['Python pipeline', 'HTML / CSS', 'GitHub Pages', 'LLM enablement'],
+      href: 'https://harwin-1.github.io/harwin-ai-insider/',
     },
   ];
 
@@ -274,7 +277,20 @@ function Work() {
                 <div className="text-white/30 font-heading italic text-5xl">{p.n}</div>
                 <div className="text-white/40 font-body text-xs tracking-widest">{p.year}</div>
               </div>
-              <h3 className="mt-3 text-2xl font-heading italic text-white">{p.title}</h3>
+              <div className="mt-3 flex items-start justify-between gap-4">
+                <h3 className="text-2xl font-heading italic text-white">{p.title}</h3>
+                {p.href && (
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-white/60 hover:text-white transition-colors shrink-0 mt-1"
+                    aria-label={`Open ${p.title}`}
+                  >
+                    <ArrowUpRight className="h-5 w-5" />
+                  </a>
+                )}
+              </div>
               <p className="mt-2 text-white/60 font-body font-light text-sm leading-relaxed">
                 {p.body}
               </p>
@@ -364,37 +380,51 @@ function Experience() {
       dates: 'Sep 2023 — Present',
       role: 'Data Engineer & AI Builder',
       company: 'Harwin plc',
-      note: 'Primary builder of AI tooling and data infrastructure. DataPilot, MCP integrations, AWS data lake, CFO reporting automation.',
+      note: 'Primary builder of AI tooling and automated data infrastructure. DataPilot (plain-English-to-SQL with Expert/Tester agent loop), an MCP server integrated with Claude Desktop for conversational data analysis, EDI pipelines processing POS data from Avnet, TTI and Digikey, the Bookings/Billings report delivered to the CFO (current version 29), Power BI pipeline monitoring via MCP, and Streamlit/Altair dashboards on Snowflake.',
     },
     {
       dates: 'Oct 2022 — Apr 2023',
       role: 'Data Insight Manager',
       company: 'Brittany Ferries',
-      note: 'Customer acquisition and retention studies. Python pipelines combining web-scraped pricing with NLP sentiment.',
+      note: 'Deep-dive studies on acquisition, retention and revenue growth across digital and commercial channels. Python pipelines combining web-scraped competitor pricing with NLP sentiment. Mentored a team of analysts.',
     },
     {
       dates: 'Oct 2021 — Oct 2022',
       role: 'Data Insight Manager',
       company: 'ICS-Digital',
-      note: 'Concurrent analytics campaigns. Twitter scraping and sentiment pipeline whose findings hit national press.',
+      note: 'End-to-end analytics across concurrent Marketing and Product campaigns. Twitter scraping + sentiment pipeline whose findings were published in multiple high-profile news articles. Managed and mentored a team of 5+.',
     },
     {
       dates: 'Jan 2020 — Oct 2021',
       role: 'Senior Data Analyst',
       company: 'GIP Technologies',
-      note: 'Pricing recommendation engine using k-means for segment-based pricing in hospitality.',
+      note: 'Pricing recommendation engine for hospitality using k-means for segment-based pricing. Customer segmentation models identifying new monetisation opportunities. CI with Jenkins, testing with Mockito.',
     },
     {
       dates: 'Mar 2017 — Aug 2019',
       role: 'Data Analyst',
       company: 'GK Telecom',
-      note: 'Trend prediction models for merchandising and inventory. First proper taste of production data work.',
+      note: 'Trend prediction models in Python for merchandising and inventory. End-to-end data prep, normalisation and predictive modelling across sales and market data.',
     },
   ];
 
-  const stack = [
-    'Python', 'Claude & GPT APIs', 'MCP Protocol', 'LangChain', 'SQL Server',
-    'Oracle', 'Snowflake', 'Streamlit', 'AWS', 'Power BI',
+  const stackGroups = [
+    {
+      label: 'AI & LLM',
+      items: ['LLM APIs (Claude, GPT)', 'Prompt engineering', 'Agentic workflows', 'MCP protocol', 'RAG', 'LLM evaluation', 'Streamlit'],
+    },
+    {
+      label: 'Data Engineering',
+      items: ['Python (pandas, Selenium, COM)', 'SQL Server', 'Oracle', 'MySQL', 'Snowflake', 'ETL pipelines', 'EDI', 'AWS'],
+    },
+    {
+      label: 'Analytics & BI',
+      items: ['Power BI', 'DAX', 'Tableau', 'KPI dashboards', 'Predictive modelling', 'Segmentation (k-means)', 'NLP / sentiment'],
+    },
+    {
+      label: 'Product & Delivery',
+      items: ['Next.js', 'Tailwind', 'Full-stack AI products', 'Git', 'Jira', 'Stakeholder management'],
+    },
   ];
 
   return (
@@ -449,14 +479,23 @@ function Experience() {
           <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
             <span className="text-xs font-medium text-white font-body">Current Stack</span>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {stack.map((t) => (
-              <span
-                key={t}
-                className="liquid-glass rounded-full px-4 py-2 text-white/80 font-body text-sm"
-              >
-                {t}
-              </span>
+          <div className="grid md:grid-cols-2 gap-6">
+            {stackGroups.map((g) => (
+              <div key={g.label} className="liquid-glass rounded-2xl p-6">
+                <div className="text-white/50 font-body text-xs uppercase tracking-widest mb-3">
+                  {g.label}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {g.items.map((t) => (
+                    <span
+                      key={t}
+                      className="text-[12px] font-body text-white/80 border border-white/15 rounded-full px-2.5 py-1"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
