@@ -1,309 +1,404 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUpRight, Mail, Menu, X, Github, Linkedin } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ArrowUpRight, ArrowRight, Mail, Github, Linkedin, MapPin, Check,
+  Sparkles, Database, Shield, Terminal, Zap,
+} from 'lucide-react';
 
-// ---------- BlurText ----------
-function BlurText({ text, delay = 80, className = '', style = {} }) {
-  const words = text.split(' ');
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setInView(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <h1 ref={ref} className={className} style={style}>
-      {words.map((w, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          style={{ marginRight: '0.25em' }}
-          initial={{ filter: 'blur(10px)', opacity: 0, y: 40 }}
-          animate={inView ? {
-            filter: ['blur(10px)', 'blur(5px)', 'blur(0px)'],
-            opacity: [0, 0.5, 1],
-            y: [40, -4, 0],
-          } : {}}
-          transition={{ duration: 0.7, delay: (i * delay) / 1000, ease: 'easeOut' }}
-        >
-          {w}
-        </motion.span>
-      ))}
-    </h1>
-  );
-}
-
-// ---------- Cosmic backdrop (subtle) ----------
-function Backdrop() {
-  return (
-    <>
-      <div className="absolute inset-0 z-0 slow-pan scene-ambient" />
-      <div className="absolute inset-0 z-0 scene-stars stars-drift opacity-60" />
-      <div className="absolute inset-0 z-0 scene-stars opacity-25 twinkle" style={{ backgroundPosition: '250px 120px' }} />
-    </>
-  );
-}
-
-// ---------- NAVBAR ----------
+// ===========================================================
+// NAVBAR — minimal pill, top-right
+// ===========================================================
 function Navbar() {
-  const [open, setOpen] = useState(false);
-  const links = [
-    { label: 'DataPilot', href: '#datapilot' },
-    { label: 'Work', href: '#work' },
-    { label: 'Experience', href: '#experience' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
   return (
-    <nav className="fixed top-4 left-0 right-0 z-50 px-6 lg:px-12">
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2">
-          <span className="font-heading italic text-2xl text-white">Navendra Singh</span>
+    <nav className="fixed top-4 inset-x-0 z-50 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="#top" className="flex items-center gap-2 font-display italic text-xl text-[color:var(--ink)]">
+          <span>Navendra Singh</span>
         </a>
-
-        <div className="hidden md:flex liquid-glass rounded-full px-1.5 py-1 items-center gap-1">
-          {links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className="px-4 py-2 text-sm font-medium text-white/80 font-body hover:text-white transition-colors"
-            >
-              {l.label}
+        <div className="hidden md:flex items-center gap-1 bg-white/80 backdrop-blur-md rounded-full px-1.5 py-1 shadow-sm border border-black/5">
+          {[
+            ['DataPilot', '#datapilot'],
+            ['Work', '#work'],
+            ['Experience', '#experience'],
+            ['Contact', '#contact'],
+          ].map(([label, href]) => (
+            <a key={label} href={href} className="px-3.5 py-1.5 text-sm font-ui text-[color:var(--ink-2)] hover:text-[color:var(--ink)] rounded-full hover:bg-black/5 transition-colors">
+              {label}
             </a>
           ))}
-          <a
-            href="mailto:navendra8@gmail.com"
-            className="bg-white text-black rounded-full px-4 py-2 text-sm font-semibold font-body flex items-center gap-1 hover:bg-white/90 transition-colors ml-1"
-          >
-            Email Me
-            <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+          <a href="mailto:navendra8@gmail.com" className="ml-1 bg-[color:var(--ink)] text-[color:var(--paper)] rounded-full px-3.5 py-1.5 text-sm font-ui font-medium hover:bg-black/80 transition-colors flex items-center gap-1">
+            Email <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.2} />
           </a>
         </div>
-
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden liquid-glass rounded-full p-2.5 text-white"
-          aria-label="menu"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <a href="mailto:navendra8@gmail.com" className="md:hidden bg-[color:var(--ink)] text-[color:var(--paper)] rounded-full p-2.5">
+          <Mail className="h-4 w-4" />
+        </a>
       </div>
-
-      {open && (
-        <div className="md:hidden mt-3 max-w-6xl mx-auto">
-          <div className="liquid-glass rounded-2xl p-4 flex flex-col gap-1">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="px-4 py-3 text-sm font-medium text-white/80 font-body hover:text-white"
-              >
-                {l.label}
-              </a>
-            ))}
-            <a
-              href="mailto:navendra8@gmail.com"
-              className="mt-2 bg-white text-black rounded-full px-4 py-3 text-sm font-semibold font-body flex items-center justify-center gap-1"
-            >
-              Email Me
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }
 
-// ---------- HERO ----------
-function Hero() {
-  const places = ['Harwin', 'Brittany Ferries', 'ICS-Digital', 'GIP Technologies', 'GK Telecom'];
+// ===========================================================
+// HERO TILE — the big one, spans two columns
+// ===========================================================
+function HeroTile() {
   return (
-    <section id="top" className="relative overflow-hidden min-h-screen">
-      <Backdrop />
-
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <div className="flex-1 pt-32 md:pt-40 px-6 md:px-16 lg:px-24 pb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="liquid-glass rounded-full px-1 py-1 inline-flex items-center gap-2 mb-8"
-          >
-            <span className="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold font-body">Open</span>
-            <span className="text-white text-xs font-body pr-3">Hybrid London or fully remote AI Engineer roles.</span>
-          </motion.div>
-
-          <BlurText
-            text="Production LLM systems on enterprise data."
-            delay={90}
-            className="text-5xl md:text-6xl lg:text-[5.5rem] font-heading italic text-white leading-[0.9] max-w-4xl"
-            style={{ letterSpacing: '-2px' }}
-          />
-
-          <motion.p
-            initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
-            animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.6 }}
-            className="mt-6 text-sm md:text-base text-white/70 font-body font-light leading-relaxed max-w-xl"
-          >
-            AI Engineer inside a 400-person regulated manufacturer (aerospace, defence, medical).
-            Builder of <span className="text-white">DataPilot</span> — a text-to-SQL agent with a
-            self-correcting Expert / Tester loop serving 150+ business users against live Oracle IFS
-            and SQL Server. 8+ years across Python, SQL, and cloud data engineering.
-          </motion.p>
-
-          <motion.div
-            initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
-            animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.6 }}
-            className="mt-8 flex flex-wrap items-center gap-4"
-          >
-            <a
-              href="#datapilot"
-              className="liquid-glass-strong rounded-full px-6 py-3 text-white font-body text-sm font-medium flex items-center gap-2 hover:bg-white/5 transition-colors"
-            >
-              See DataPilot Architecture
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a
-              href="mailto:navendra8@gmail.com"
-              className="text-white font-body text-sm font-light flex items-center gap-2 hover:text-white/80 transition-colors"
-            >
-              <Mail className="h-4 w-4" />
-              navendra8@gmail.com
-            </a>
-          </motion.div>
+    <div className="tile tile-cream lg:col-span-2 lg:row-span-2 min-h-[520px] flex flex-col justify-between">
+      <div>
+        <div className="flex items-center gap-2">
+          <span className="status-dot w-2 h-2 rounded-full bg-emerald-600" />
+          <span className="kicker">Available · Hybrid London or fully remote</span>
         </div>
+        <h1 className="mt-8 font-display italic text-[2.75rem] md:text-[3.5rem] lg:text-[4.25rem] leading-[0.95] tracking-tight text-[color:var(--ink)]">
+          I build <span className="not-italic">production</span><br />
+          LLM systems on<br />
+          <span className="text-[color:var(--tile-terracotta)]">enterprise data.</span>
+        </h1>
+        <p className="mt-6 text-[color:var(--muted)] font-ui text-base md:text-lg leading-relaxed max-w-lg">
+          AI Engineer inside a 400-person regulated manufacturer
+          (aerospace, defence, medical). Eight-plus years across Python, SQL,
+          and cloud data engineering. Builder of DataPilot.
+        </p>
+      </div>
+      <div className="flex flex-wrap items-center gap-3 mt-8">
+        <a href="#datapilot" className="bg-[color:var(--ink)] text-[color:var(--paper)] rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 hover:bg-black/80 transition-colors">
+          See DataPilot <ArrowRight className="h-4 w-4" />
+        </a>
+        <a href="mailto:navendra8@gmail.com" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-black/15 hover:bg-black/5 transition-colors">
+          <Mail className="h-4 w-4" /> Say hi
+        </a>
+      </div>
+    </div>
+  );
+}
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className="px-6 md:px-16 lg:px-24 pb-10 pt-8"
-        >
-          <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <p className="text-white/40 text-xs font-body uppercase tracking-widest">
-              Eight years · Five companies
-            </p>
-            <div className="flex flex-wrap items-center gap-6 md:gap-10">
-              {places.map((p) => (
-                <span
-                  key={p}
-                  className="text-lg md:text-xl font-heading italic text-white/55 hover:text-white transition-colors cursor-default"
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
+// ===========================================================
+// DATAPILOT MINI-DEMO TILE — animated Expert/Tester loop
+// ===========================================================
+function DataPilotDemo() {
+  const queries = [
+    {
+      nl: 'Top 10 customers by revenue this quarter',
+      sql: "SELECT customer_name, SUM(revenue) AS q_revenue\nFROM sales_fact\nWHERE quarter = CURRENT_QUARTER()\nGROUP BY customer_name\nORDER BY q_revenue DESC\nLIMIT 10;",
+    },
+    {
+      nl: 'Distributors with POS below last month',
+      sql: "SELECT d.name, SUM(p.units) AS pos_now\nFROM distributor d\nJOIN pos_daily p ON p.dist_id = d.id\nWHERE p.date >= DATE_TRUNC('month', CURRENT_DATE)\nGROUP BY d.name\nHAVING pos_now < last_month_avg(d.id);",
+    },
+    {
+      nl: 'Average bookings lead time by product line',
+      sql: "SELECT product_line,\n       AVG(DATEDIFF(day, booked_at, shipped_at)) AS lead_days\nFROM bookings\nWHERE booked_at >= DATEADD(month, -6, CURRENT_DATE)\nGROUP BY product_line\nORDER BY lead_days;",
+    },
+  ];
+
+  const steps = ['typing', 'expert', 'tester', 'done'];
+  const [qIdx, setQIdx] = useState(0);
+  const [step, setStep] = useState('typing');
+  const [typed, setTyped] = useState('');
+
+  // Type the natural-language query out
+  useEffect(() => {
+    if (step !== 'typing') return;
+    const target = queries[qIdx].nl;
+    if (typed.length < target.length) {
+      const t = setTimeout(() => setTyped(target.slice(0, typed.length + 1)), 35);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setStep('expert'), 400);
+    return () => clearTimeout(t);
+  }, [step, typed, qIdx]);
+
+  useEffect(() => {
+    if (step === 'expert')  { const t = setTimeout(() => setStep('tester'), 1100); return () => clearTimeout(t); }
+    if (step === 'tester')  { const t = setTimeout(() => setStep('done'),   1100); return () => clearTimeout(t); }
+    if (step === 'done') {
+      const t = setTimeout(() => {
+        setTyped('');
+        setStep('typing');
+        setQIdx((i) => (i + 1) % queries.length);
+      }, 3800);
+      return () => clearTimeout(t);
+    }
+  }, [step, qIdx]);
+
+  const q = queries[qIdx];
+
+  return (
+    <div className="tile tile-ink lg:col-span-2 lg:row-span-2 min-h-[520px] flex flex-col">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Flagship · DataPilot</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[color:var(--tile-rose)]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[color:var(--tile-butter)]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[color:var(--tile-sage)]" />
+        </div>
+      </div>
+
+      <h2 className="mt-4 font-display italic text-3xl md:text-4xl leading-[1.05] text-[color:var(--paper)]">
+        Natural language in.<br />Validated SQL out.
+      </h2>
+
+      {/* Prompt input */}
+      <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+        <div className="kicker" style={{ color: 'rgba(245,241,234,0.5)' }}>Prompt</div>
+        <div className="mt-2 font-ui text-[color:var(--paper)] text-base min-h-[1.5em]">
+          {typed}{step === 'typing' && <span className="caret">▍</span>}
+        </div>
+      </div>
+
+      {/* Expert → Tester pipeline */}
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <AgentPill
+          label="Expert agent"
+          sub="Generates SQL"
+          active={step === 'expert'}
+          done={['tester', 'done'].includes(step)}
+        />
+        <AgentPill
+          label="Tester agent"
+          sub="Validates & retries"
+          active={step === 'tester'}
+          done={step === 'done'}
+        />
+      </div>
+
+      {/* SQL output */}
+      <div className="mt-4 flex-1 rounded-2xl border border-white/10 bg-black/40 p-4 overflow-hidden">
+        <div className="flex items-center justify-between">
+          <div className="kicker" style={{ color: 'rgba(245,241,234,0.5)' }}>SQL</div>
+          <AnimatePresence>
+            {step === 'done' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-1.5 text-[11px] font-ui text-emerald-400"
+              >
+                <Check className="h-3.5 w-3.5" />
+                Validated · &lt; 5s
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <AnimatePresence mode="wait">
+          {(step === 'tester' || step === 'done') ? (
+            <motion.pre
+              key={qIdx + step}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mt-2 font-mono text-[12.5px] leading-relaxed text-emerald-200/90 whitespace-pre-wrap"
+            >{q.sql}</motion.pre>
+          ) : (
+            <div className="mt-2 font-mono text-[12.5px] text-white/30">— awaiting generation —</div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+function AgentPill({ label, sub, active, done }) {
+  const bg = done ? 'bg-emerald-500/20 border-emerald-400/40' : active ? 'bg-[color:var(--tile-terracotta)]/20 border-[color:var(--tile-terracotta)]/60' : 'bg-white/5 border-white/10';
+  const icon = done ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : active ? <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--tile-terracotta)] status-dot" /> : <span className="w-1.5 h-1.5 rounded-full bg-white/30" />;
+  return (
+    <div className={`rounded-2xl border px-4 py-3 transition-colors ${bg}`}>
+      <div className="flex items-center gap-2">
+        {icon}
+        <span className="font-ui text-sm font-medium text-[color:var(--paper)]">{label}</span>
+      </div>
+      <div className="mt-0.5 font-ui text-[11px] text-white/50">{sub}</div>
+    </div>
+  );
+}
+
+// ===========================================================
+// SMALLER TILES
+// ===========================================================
+
+function StatTile({ value, label, color }) {
+  return (
+    <div className={`tile ${color} min-h-[200px] flex flex-col justify-between`}>
+      <div className="kicker">{label}</div>
+      <div className="font-display italic text-[5rem] leading-none">{value}</div>
+    </div>
+  );
+}
+
+function UsersTile() {
+  return (
+    <div className="tile tile-terracotta min-h-[200px] flex flex-col justify-between">
+      <div className="kicker">Live Users</div>
+      <div>
+        <div className="font-display italic text-[5rem] leading-none">150+</div>
+        <div className="mt-2 font-ui text-sm leading-snug">
+          non-technical staff in Sales, Ops, and Finance querying live data in plain English.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AccuracyTile() {
+  return (
+    <div className="tile tile-sage min-h-[200px] flex flex-col justify-between">
+      <div className="kicker">First-pass accuracy</div>
+      <div>
+        <div className="font-display italic text-[5rem] leading-none">~90%</div>
+        <div className="mt-2 font-ui text-sm leading-snug">
+          via the Tester loop. Median latency under 5 seconds.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LocationTile() {
+  return (
+    <div className="tile tile-cream min-h-[200px] flex flex-col justify-between">
+      <div className="kicker">Based in</div>
+      <div>
+        <div className="flex items-center gap-2">
+          <MapPin className="h-5 w-5" />
+          <span className="font-display italic text-3xl">Newcastle, UK</span>
+        </div>
+        <div className="mt-3 font-ui text-sm text-[color:var(--muted)]">
+          Open to hybrid London or fully remote roles.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LearningTile() {
+  const items = ['AWS ML Engineer Associate', 'LangGraph workflows', 'RAG eval with RAGAS'];
+  return (
+    <div className="tile tile-lavender min-h-[200px] flex flex-col">
+      <div className="flex items-center gap-2">
+        <Sparkles className="h-4 w-4" />
+        <span className="kicker">Currently learning</span>
+      </div>
+      <ul className="mt-auto space-y-1.5">
+        {items.map((i) => (
+          <li key={i} className="font-display italic text-xl leading-tight">{i}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SocialTile() {
+  const links = [
+    { label: 'GitHub', href: 'https://github.com/Navendra8', icon: Github },
+    { label: 'LinkedIn', href: 'https://linkedin.com/in/navendra-singh', icon: Linkedin },
+    { label: 'Email', href: 'mailto:navendra8@gmail.com', icon: Mail },
+  ];
+  return (
+    <div className="tile tile-ink min-h-[200px] flex flex-col justify-between">
+      <div className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Elsewhere</div>
+      <div className="grid grid-cols-3 gap-2">
+        {links.map(({ label, href, icon: Icon }) => (
+          <a key={label} href={href} target="_blank" rel="noreferrer"
+             className="rounded-xl border border-white/10 p-3 flex flex-col items-start gap-2 hover:bg-white/5 transition-colors">
+            <Icon className="h-4 w-4" />
+            <span className="font-ui text-xs">{label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ===========================================================
+// HERO BENTO GRID
+// ===========================================================
+function HeroBento() {
+  return (
+    <section id="top" className="relative pt-24 md:pt-28 pb-10 px-4 md:px-8 paper-grain">
+      <div className="max-w-7xl mx-auto">
+        {/* 6-column grid on lg, stacks on mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(200px,auto)] gap-4">
+          <HeroTile />
+          <DataPilotDemo />
+          <UsersTile />
+          <AccuracyTile />
+          <LocationTile />
+          <LearningTile />
+          <div className="lg:col-span-2">
+            <SocialTile />
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ---------- FLAGSHIP: DATAPILOT ----------
-function DataPilot() {
-  const stats = [
-    { v: '150+', l: 'Business users in Sales, Ops, Finance' },
-    { v: '~90%', l: 'First-pass SQL accuracy via Tester loop' },
-    { v: '< 5s', l: 'Median query latency' },
-    { v: '400', l: 'Person regulated manufacturer' },
-  ];
-
-  const sections = [
+// ===========================================================
+// DATAPILOT DEEP-DIVE — below the fold
+// ===========================================================
+function DataPilotDeep() {
+  const cards = [
     {
-      label: 'What it does',
-      body: 'Lets 150–200 non-technical users across Sales, Ops, and Finance query live Oracle IFS and SQL Server data in natural language — nearly half of a 400-person business.',
-    },
-    {
+      icon: Zap,
+      color: 'tile-butter',
       label: 'Architecture',
-      body: 'Two-agent system. An Expert agent generates SQL from schema-aware prompts; a Tester agent validates syntax, executes against a sandboxed read replica, inspects result shape, and loops corrections back before surfacing output.',
+      body: 'Expert agent generates SQL from schema-aware prompts. Tester agent validates syntax, executes against a sandboxed read replica, inspects result shape, and loops corrections back before surfacing output.',
     },
     {
+      icon: Terminal,
+      color: 'tile-sage',
       label: 'Why this pattern',
-      body: 'Expert / Tester over single-shot generation and over a full ReAct loop. Single-shot fails quietly on schema edge cases; ReAct burns tokens on reasoning better expressed as a deterministic validation step. The Tester loop closes the accuracy gap where it matters — valid SQL against a real schema — without paying ReAct’s latency and cost.',
+      body: 'Expert / Tester over single-shot and over full ReAct. Single-shot fails quietly on schema edge cases. ReAct burns tokens on reasoning better expressed as a deterministic validation step. The loop closes the accuracy gap without paying ReAct’s cost.',
     },
     {
+      icon: Shield,
+      color: 'tile-rose',
       label: 'Guardrails',
-      body: 'Read-only enforcement at the connection layer, row limits, query-timeout fallback, and graceful degradation when the Tester cannot validate inside the retry budget. Schema snapshots versioned so prompt changes and schema changes are auditable.',
+      body: 'Read-only enforcement at the connection layer, row limits, query-timeout fallback, graceful degradation when the Tester can’t validate in budget. Schema snapshots versioned so prompt and schema changes are auditable.',
+    },
+    {
+      icon: Database,
+      color: 'tile-blue',
+      label: 'Stack',
+      body: 'Python · Streamlit · Claude and GPT APIs (model-agnostic at the prompt layer) · Oracle IFS · SQL Server · custom logging for query telemetry and performance monitoring.',
     },
   ];
-
-  const stack = ['Python', 'Streamlit', 'Claude API', 'GPT API', 'Oracle IFS', 'SQL Server', 'Custom query telemetry'];
 
   return (
-    <section id="datapilot" className="relative overflow-hidden py-32 px-6 md:px-16">
-      <div className="absolute inset-0 z-0 scene-ambient opacity-70" />
-      <div className="absolute inset-0 z-0 scene-stars stars-drift opacity-30" />
-
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="mb-14">
-          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">Flagship Project</span>
+    <section id="datapilot" className="relative py-20 md:py-28 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-end justify-between gap-6 flex-wrap mb-10">
+          <div>
+            <div className="kicker text-[color:var(--muted)]">Flagship Project</div>
+            <h2 className="mt-3 font-display italic text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight max-w-3xl">
+              A text-to-SQL agent with a self-correcting Expert / Tester loop.
+            </h2>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9] max-w-3xl">
-            DataPilot — text-to-SQL with a self-correcting Expert / Tester loop.
-          </h2>
-          <p className="mt-6 text-white/65 font-body font-light text-sm md:text-base max-w-2xl leading-relaxed">
-            The flagship AI product at Harwin. A two-agent system that turns plain English into
-            validated SQL against live Oracle IFS and SQL Server, with real guardrails and real
-            telemetry.
-          </p>
+          <div className="text-[color:var(--muted)] font-ui text-sm max-w-sm">
+            Serves nearly half of a 400-person business across Sales, Ops, and Finance.
+            Running in production since 2024.
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
-          {stats.map((s, i) => (
+        <div className="grid md:grid-cols-2 gap-4">
+          {cards.map(({ icon: Icon, color, label, body }) => (
             <motion.div
-              key={s.l}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="liquid-glass rounded-2xl p-6"
-            >
-              <div className="text-4xl md:text-5xl font-heading italic text-white leading-none">{s.v}</div>
-              <div className="mt-3 text-white/55 font-body font-light text-xs leading-relaxed">{s.l}</div>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {sections.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 30 }}
+              key={label}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: i * 0.06 }}
-              className="liquid-glass rounded-2xl p-7"
+              transition={{ duration: 0.5 }}
+              className={`tile ${color} min-h-[220px] flex flex-col`}
             >
-              <div className="text-white/45 font-body text-xs uppercase tracking-widest mb-3">
-                {s.label}
+              <div className="flex items-center gap-2">
+                <Icon className="h-4 w-4" />
+                <span className="kicker">{label}</span>
               </div>
-              <p className="text-white/85 font-body font-light text-sm md:text-base leading-relaxed">
-                {s.body}
-              </p>
+              <p className="mt-5 font-ui text-[15px] leading-relaxed">{body}</p>
             </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-10 flex flex-wrap gap-2">
-          {stack.map((t) => (
-            <span
-              key={t}
-              className="liquid-glass rounded-full px-3.5 py-1.5 text-white/80 font-body text-xs"
-            >
-              {t}
-            </span>
           ))}
         </div>
       </div>
@@ -311,102 +406,70 @@ function DataPilot() {
   );
 }
 
-// ---------- ALSO SHIPPED ----------
-function Work() {
-  const projects = [
+// ===========================================================
+// ALSO SHIPPED
+// ===========================================================
+function AlsoShipped() {
+  const items = [
     {
       n: '01',
-      year: '2024',
       title: 'Harwin AI Insider',
-      body: '24-week internal LLM enablement platform serving all 400 staff. Measurable increase in internal AI-tool adoption and a drop in ad-hoc data requests.',
-      pills: ['Python pipeline', 'HTML / CSS', 'GitHub Pages', 'Enablement'],
+      body: '24-week internal LLM enablement platform serving all 400 staff. Measurable increase in AI-tool adoption, drop in ad-hoc data requests.',
       href: 'https://harwin-1.github.io/harwin-ai-insider/',
+      tags: ['Python pipeline', 'HTML / CSS', 'GitHub Pages', 'Enablement'],
     },
     {
       n: '02',
-      year: '2024',
       title: 'MCP Server for Claude Desktop',
       body: 'Custom Anthropic MCP server exposing the MySQL warehouse as tools inside Claude Desktop. Conversational access to pipeline and operational data without opening a BI tool.',
-      pills: ['MCP', 'Claude Desktop', 'MySQL', 'Tool use'],
-      href: null,
+      tags: ['MCP', 'Claude Desktop', 'MySQL', 'Tool use'],
     },
     {
       n: '03',
-      year: '2023 — 2025',
       title: 'Data Platform Rebuild',
-      body: 'AWS Data Lake + Snowflake analytical layer consolidating ERP, CRM, and distributor sources. Distributor POS rebuilt from a full-day Access/SQL/R/Python/Excel patchwork into a single Python pipeline under 5 minutes. One critical reporting process cut from 24 hours to 30.',
-      pills: ['AWS', 'Snowflake', 'Python', 'n8n', 'ETL'],
-      href: null,
+      body: 'AWS Data Lake + Snowflake analytical layer consolidating ERP, CRM, and distributor sources. Distributor POS rebuilt from a full-day Access/SQL/R/Python/Excel patchwork into a single Python pipeline under 5 minutes. One critical report cut from 24h to 30min.',
+      tags: ['AWS', 'Snowflake', 'Python', 'n8n', 'ETL'],
     },
   ];
 
   return (
-    <section id="work" className="relative overflow-hidden py-32 px-6 md:px-16">
-      <div className="absolute inset-0 z-0 scene-stars opacity-20 twinkle" />
-
-      <div className="relative z-10 max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-start">
-        <div className="md:w-1/2 md:sticky md:top-32">
-          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">Also Shipped</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9]">
-            The rest of the surface area.
+    <section id="work" className="relative py-20 md:py-28 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-10">
+          <div className="kicker text-[color:var(--muted)]">Also Shipped</div>
+          <h2 className="mt-3 font-display italic text-4xl md:text-5xl leading-[0.95] tracking-tight">
+            DataPilot doesn’t exist in isolation.
           </h2>
-          <p className="mt-5 text-white/60 font-body font-light text-sm md:text-base max-w-md leading-relaxed">
-            DataPilot doesn't exist in isolation. It sits on a data platform and alongside the
-            enablement work that taught 400 people how to actually use AI at work.
-          </p>
-          <a
-            href="mailto:navendra8@gmail.com?subject=Hi%20Nav"
-            className="mt-8 liquid-glass-strong rounded-full px-6 py-3 text-white font-body text-sm font-medium inline-flex items-center gap-2"
-          >
-            Talk About Your Problem
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
         </div>
 
-        <div className="md:w-1/2 flex flex-col gap-8">
-          {projects.map((p) => (
-            <motion.div
+        <div className="grid md:grid-cols-3 gap-4">
+          {items.map((p) => (
+            <motion.a
               key={p.n}
-              initial={{ opacity: 0, y: 30 }}
+              href={p.href || '#'}
+              target={p.href ? '_blank' : undefined}
+              rel={p.href ? 'noreferrer' : undefined}
+              onClick={(e) => !p.href && e.preventDefault()}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6 }}
-              className="liquid-glass rounded-2xl p-8"
+              transition={{ duration: 0.5 }}
+              className={`tile tile-cream ${p.href ? 'tile-link' : ''} min-h-[300px] flex flex-col justify-between`}
             >
-              <div className="flex items-baseline justify-between">
-                <div className="text-white/30 font-heading italic text-5xl">{p.n}</div>
-                <div className="text-white/40 font-body text-xs tracking-widest">{p.year}</div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-display italic text-4xl text-[color:var(--muted)]">{p.n}</span>
+                  {p.href && <ArrowUpRight className="h-5 w-5 text-[color:var(--ink)]" />}
+                </div>
+                <h3 className="mt-4 font-display italic text-2xl leading-tight">{p.title}</h3>
+                <p className="mt-3 font-ui text-[14px] text-[color:var(--muted)] leading-relaxed">{p.body}</p>
               </div>
-              <div className="mt-3 flex items-start justify-between gap-4">
-                <h3 className="text-2xl font-heading italic text-white">{p.title}</h3>
-                {p.href && (
-                  <a
-                    href={p.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-white/60 hover:text-white transition-colors shrink-0 mt-1"
-                    aria-label={`Open ${p.title}`}
-                  >
-                    <ArrowUpRight className="h-5 w-5" />
-                  </a>
-                )}
-              </div>
-              <p className="mt-2 text-white/60 font-body font-light text-sm leading-relaxed">
-                {p.body}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {p.pills.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[11px] font-body text-white/70 border border-white/15 rounded-full px-2.5 py-1"
-                  >
-                    {t}
-                  </span>
+              <div className="mt-6 flex flex-wrap gap-1.5">
+                {p.tags.map((t) => (
+                  <span key={t} className="text-[11px] font-ui border border-black/10 rounded-full px-2 py-0.5 text-[color:var(--ink-2)]">{t}</span>
                 ))}
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>
@@ -414,293 +477,162 @@ function Work() {
   );
 }
 
-// ---------- PHILOSOPHY ----------
-function Philosophy() {
-  const rows = [
-    {
-      title: 'Pick the simplest architecture that closes the real gap.',
-      body: 'Single-shot generation, Expert / Tester, full ReAct — they all "work" in a demo. The question is which one closes the actual failure mode for this problem. For DataPilot it was valid SQL against a real schema, so a deterministic validation step beats open-ended reasoning. Match the pattern to the gap, not to fashion.',
-    },
-    {
-      title: 'Guardrails are part of the product.',
-      body: 'Read-only connections, row limits, query-timeout fallback, graceful degradation, versioned schema snapshots. These are not polish — they’re what lets an LLM touch a production database without becoming a liability. Ship them alongside the model, not after.',
-    },
-  ];
-
-  return (
-    <section id="about" className="relative py-32 px-6 md:px-16">
-      <div className="absolute inset-0 scene-stars opacity-20 twinkle pointer-events-none" />
-      <div className="relative max-w-6xl mx-auto">
-        <div className="mb-20">
-          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">What I Care About</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9] max-w-2xl">
-            Architecture is a judgment call. Guardrails are a feature.
-          </h2>
-          <p className="mt-6 text-white/60 font-body font-light text-sm md:text-base max-w-xl leading-relaxed">
-            Two convictions shaped every production LLM decision I’ve made at Harwin.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-16">
-          {rows.map((r, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7 }}
-              className={`flex flex-col ${idx % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} items-start md:items-center gap-10`}
-            >
-              <div className="flex-1">
-                <h3 className="text-3xl md:text-4xl font-heading italic text-white leading-[0.95]">
-                  {r.title}
-                </h3>
-                <p className="mt-5 text-white/60 font-body font-light text-sm md:text-base leading-relaxed max-w-md">
-                  {r.body}
-                </p>
-              </div>
-              <div className="flex-1 w-full">
-                <div className="liquid-glass rounded-2xl overflow-hidden relative h-64 md:h-80 w-full">
-                  <div className="absolute inset-0 scene-ambient opacity-80" />
-                  <div className="absolute inset-0 scene-stars opacity-50 twinkle" />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ---------- EXPERIENCE ----------
+// ===========================================================
+// EXPERIENCE — list with hover reveal
+// ===========================================================
 function Experience() {
   const roles = [
     {
-      dates: 'Sep 2023 — Present',
+      dates: 'Sep 2023 — Now',
       role: 'Data Engineer & AI Builder',
-      company: 'Harwin — UK',
-      note: 'Sole builder of the AI product surface and primary engineer on the automated data platform, delivering directly into Finance Leadership. DataPilot (flagship), a custom Anthropic MCP server exposing the MySQL warehouse inside Claude Desktop, the Harwin AI Insider 24-week enablement programme for all 400 staff, n8n-driven automated analytics pipelines (up to 95% turnaround reduction), AWS Data Lake + Snowflake consolidating ERP/CRM/distributor sources, and the distributor POS rebuild (full-day patchwork → single Python pipeline under 5 minutes). Tableau and Streamlit executive KPI dashboards. Data integrity, validation and governance across the analytics function.',
+      company: 'Harwin',
+      place: 'UK',
+      note: 'Sole builder of the AI product surface and primary engineer on the data platform. DataPilot (flagship), MCP server for Claude Desktop, Harwin AI Insider, n8n automated analytics (up to 95% turnaround cut), AWS Data Lake + Snowflake, distributor POS rebuild (full day → under 5 min), Tableau/Streamlit executive dashboards.',
     },
     {
       dates: 'Oct 2022 — Apr 2023',
       role: 'Data Insight Manager',
-      company: 'Brittany Ferries — UK',
-      note: 'UK–France ferry operator, £450m+ revenue. Deep-dive studies on acquisition, retention and revenue growth. Python pipelines combining web-scraped competitor pricing with NLP sentiment into a single commercial-intelligence view. Mentored a team of analysts.',
+      company: 'Brittany Ferries',
+      place: 'UK',
+      note: 'Deep-dive studies on acquisition, retention, revenue growth. Python pipelines combining web-scraped competitor pricing with NLP sentiment. Mentored a team of analysts.',
     },
     {
       dates: 'Oct 2021 — Oct 2022',
       role: 'Data Insight Manager',
-      company: 'ICS-Digital — Leeds, UK',
-      note: 'End-to-end analytics across concurrent Marketing and Product campaigns. Twitter scraping + sentiment pipeline whose findings were published across multiple high-profile news articles. Shipped automation that improved analytics processing efficiency by 40%+. Managed 5+ analysts and tech executives.',
+      company: 'ICS-Digital',
+      place: 'Leeds, UK',
+      note: 'End-to-end analytics across concurrent Marketing and Product campaigns. Twitter scraping + sentiment pipeline whose findings were published across multiple high-profile news articles. Managed 5+ analysts.',
     },
     {
       dates: 'Jan 2020 — Oct 2021',
       role: 'Data Analyst',
-      company: 'GIP Technologies — Jaipur, India',
-      note: 'Pricing recommendation engine using k-means clustering for segment-based pricing across hotel segments. Customer segmentation models identifying new user segments and monetisation opportunities.',
+      company: 'GIP Technologies',
+      place: 'Jaipur, India',
+      note: 'Pricing recommendation engine using k-means for segment-based pricing across hotel segments. Customer segmentation identifying new monetisation opportunities.',
     },
     {
       dates: 'Mar 2017 — Aug 2019',
       role: 'Data Analyst',
-      company: 'GK Telecom — Edinburgh, UK',
-      note: 'Trend prediction models in Python for merchandising and inventory. End-to-end data preparation, normalisation and predictive modelling; evaluated and validated models to improve accuracy.',
-    },
-  ];
-
-  const stackGroups = [
-    {
-      label: 'AI & LLM Engineering',
-      items: ['Claude API', 'OpenAI API', 'Anthropic MCP', 'Expert / Tester loops', 'Prompt engineering', 'Structured outputs', 'Tool use', 'RAG', 'LLM evaluation', 'Guardrails', 'Token & cost optimisation', 'Query telemetry'],
-    },
-    {
-      label: 'Automation & Data Engineering',
-      items: ['n8n', 'Python', 'AWS Data Lake', 'Snowflake', 'ETL / ELT', 'Data modelling', 'EDI', 'Integrity & validation frameworks'],
-    },
-    {
-      label: 'Analytics & BI',
-      items: ['SQL', 'Tableau', 'Power BI', 'Amazon QuickSight', 'Streamlit', 'KPI dashboards', 'GTM analytics'],
-    },
-    {
-      label: 'ML & Advanced Analytics',
-      items: ['Predictive modelling', 'Forecasting', 'Segmentation (clustering)', 'NLP / sentiment', 'Statistical analysis'],
-    },
-    {
-      label: 'Data Collection & Integration',
-      items: ['Selenium', 'BeautifulSoup', 'Scrapy', 'REST APIs', 'Structured & unstructured data'],
-    },
-    {
-      label: 'Databases & Storage',
-      items: ['Snowflake', 'MySQL', 'Microsoft SQL Server', 'Oracle IFS', 'MS Access'],
+      company: 'GK Telecom',
+      place: 'Edinburgh, UK',
+      note: 'Trend prediction models in Python for merchandising and inventory. End-to-end data prep, normalisation, and predictive modelling.',
     },
   ];
 
   return (
-    <section id="experience" className="relative overflow-hidden py-32 px-6 md:px-16">
-      <Backdrop />
-      <div
-        className="absolute inset-x-0 top-0 z-[1]"
-        style={{ height: 200, background: 'linear-gradient(to bottom, #000, transparent)' }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 z-[1]"
-        style={{ height: 200, background: 'linear-gradient(to top, #000, transparent)' }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="mb-16">
-          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">Experience</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading italic text-white tracking-tight leading-[0.9]">
+    <section id="experience" className="relative py-20 md:py-28 px-4 md:px-8 bg-[color:var(--paper-2)]">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-10">
+          <div className="kicker text-[color:var(--muted)]">Experience</div>
+          <h2 className="mt-3 font-display italic text-4xl md:text-5xl leading-[0.95] tracking-tight">
             Eight-plus years. SQL to agents.
           </h2>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
           {roles.map((r, i) => (
             <motion.div
               key={r.company}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
-              className="liquid-glass rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-[180px_1fr] gap-4 md:gap-8"
+              transition={{ duration: 0.4, delay: i * 0.04 }}
+              className="group grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 md:gap-8 py-6 hairline first:border-t-0 first:pt-2"
             >
-              <div className="text-white/50 font-body text-xs md:text-sm tracking-wide pt-1">
+              <div className="font-ui text-xs md:text-sm text-[color:var(--muted)] tracking-wide pt-1">
                 {r.dates}
               </div>
               <div>
-                <div className="flex items-baseline gap-3 flex-wrap">
-                  <h3 className="text-xl md:text-2xl font-heading italic text-white">{r.role}</h3>
-                  <span className="text-white/60 font-body text-sm">— {r.company}</span>
+                <div className="flex items-baseline gap-2 flex-wrap">
+                  <h3 className="font-display italic text-2xl md:text-3xl text-[color:var(--ink)] leading-tight">
+                    {r.role}
+                  </h3>
+                  <span className="text-[color:var(--muted)] font-ui text-sm">— {r.company}, {r.place}</span>
                 </div>
-                <p className="mt-2 text-white/55 font-body font-light text-sm leading-relaxed">
+                <p className="mt-2 text-[color:var(--ink-2)] font-ui text-[15px] leading-relaxed max-w-3xl">
                   {r.note}
                 </p>
               </div>
             </motion.div>
           ))}
         </div>
-
-        <div className="mt-20">
-          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">Current Stack</span>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {stackGroups.map((g) => (
-              <div key={g.label} className="liquid-glass rounded-2xl p-6">
-                <div className="text-white/50 font-body text-xs uppercase tracking-widest mb-3">
-                  {g.label}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {g.items.map((t) => (
-                    <span
-                      key={t}
-                      className="text-[12px] font-body text-white/80 border border-white/15 rounded-full px-2.5 py-1"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-16">
-          <div className="liquid-glass rounded-full px-3.5 py-1 inline-block mb-6">
-            <span className="text-xs font-medium text-white font-body">Education & Certifications</span>
-          </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="liquid-glass rounded-2xl p-6">
-              <div className="text-xl font-heading italic text-white">
-                MSc Information Technology (Business)
-              </div>
-              <div className="mt-1 text-white/60 font-body text-sm">
-                Heriot-Watt University, Edinburgh · 2012 – 2013
-              </div>
-            </div>
-            <div className="liquid-glass rounded-2xl p-6">
-              <div className="text-white/50 font-body text-xs uppercase tracking-widest mb-3">
-                Certifications
-              </div>
-              <ul className="text-white/80 font-body font-light text-sm space-y-1.5">
-                <li>AWS Certified Machine Learning Engineer (Associate) — in progress</li>
-                <li>Google Cloud Generative AI — Vertex AI, Prompt Design, GSP519</li>
-                <li>Microsoft Certified: Introduction to Programming Using Python (MTA)</li>
-                <li>Python with Data Science — Grras Solution Pvt.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
 }
 
-// ---------- CTA + FOOTER ----------
-function CtaFooter() {
+// ===========================================================
+// SKILLS + EDU — two-column bento
+// ===========================================================
+function SkillsEdu() {
+  const groups = [
+    { label: 'AI & LLM Engineering', color: 'tile-ink',
+      items: ['Claude API', 'OpenAI API', 'Anthropic MCP', 'Expert / Tester loops', 'Prompt engineering', 'Structured outputs', 'Tool use', 'RAG', 'LLM evaluation', 'Guardrails', 'Token & cost optimisation', 'Query telemetry'] },
+    { label: 'Automation & Data Eng.', color: 'tile-cream',
+      items: ['n8n', 'Python', 'AWS Data Lake', 'Snowflake', 'ETL / ELT', 'Data modelling', 'EDI', 'Validation frameworks'] },
+    { label: 'Analytics & BI', color: 'tile-lavender',
+      items: ['SQL', 'Tableau', 'Power BI', 'QuickSight', 'Streamlit', 'KPI dashboards', 'GTM analytics'] },
+    { label: 'ML & Advanced Analytics', color: 'tile-sage',
+      items: ['Predictive modelling', 'Forecasting', 'Segmentation (k-means)', 'NLP / sentiment', 'Statistical analysis'] },
+    { label: 'Databases & Storage', color: 'tile-blue',
+      items: ['Snowflake', 'MySQL', 'MS SQL Server', 'Oracle IFS', 'MS Access'] },
+    { label: 'Collection & Integration', color: 'tile-rose',
+      items: ['Selenium', 'BeautifulSoup', 'Scrapy', 'REST APIs'] },
+  ];
+
   return (
-    <section id="contact" className="relative overflow-hidden">
-      <Backdrop />
-      <div
-        className="absolute inset-x-0 top-0 z-[1]"
-        style={{ height: 250, background: 'linear-gradient(to bottom, #000, transparent)' }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 z-[1]"
-        style={{ height: 200, background: 'linear-gradient(to top, #000, transparent)' }}
-      />
-
-      <div className="relative z-10 px-6 md:px-16 py-40">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12">
-          <div className="max-w-xl">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading italic text-white leading-[0.85]">
-              Let's talk.
-            </h2>
-            <p className="mt-6 text-white/60 font-body font-light text-sm md:text-base max-w-md leading-relaxed">
-              Best reached by email or LinkedIn. I reply the same day. Open to hybrid London or
-              fully remote AI Engineer roles, and to conversations about interesting problems.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="mailto:navendra8@gmail.com"
-                className="liquid-glass-strong rounded-full px-6 py-3 text-white font-body text-sm font-medium inline-flex items-center gap-2"
-              >
-                <Mail className="h-4 w-4" />
-                navendra8@gmail.com
-              </a>
-              <a
-                href="https://linkedin.com/in/navendra-singh"
-                target="_blank"
-                rel="noreferrer"
-                className="liquid-glass rounded-full px-6 py-3 text-white font-body text-sm font-medium inline-flex items-center gap-2"
-              >
-                <Linkedin className="h-4 w-4" />
-                LinkedIn
-              </a>
-              <a
-                href="https://github.com/Navendra8"
-                target="_blank"
-                rel="noreferrer"
-                className="liquid-glass rounded-full px-6 py-3 text-white font-body text-sm font-medium inline-flex items-center gap-2"
-              >
-                <Github className="h-4 w-4" />
-                GitHub
-              </a>
-            </div>
-          </div>
+    <section className="relative py-20 md:py-28 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-10">
+          <div className="kicker text-[color:var(--muted)]">Toolkit</div>
+          <h2 className="mt-3 font-display italic text-4xl md:text-5xl leading-[0.95] tracking-tight">
+            How the work gets made.
+          </h2>
         </div>
 
-        <div className="max-w-6xl mx-auto mt-32 pt-8 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <p className="text-white/40 text-xs font-body">Newcastle, UK · © 2026 Navendra Singh</p>
-          <div className="flex gap-6">
-            <a href="mailto:navendra8@gmail.com" className="text-white/40 text-xs font-body hover:text-white/70 transition-colors">Email</a>
-            <a href="https://linkedin.com/in/navendra-singh" className="text-white/40 text-xs font-body hover:text-white/70 transition-colors">LinkedIn</a>
-            <a href="https://github.com/Navendra8" className="text-white/40 text-xs font-body hover:text-white/70 transition-colors">GitHub</a>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {groups.map((g) => (
+            <div key={g.label} className={`tile ${g.color} min-h-[180px]`}>
+              <div className="kicker" style={g.color === 'tile-ink' ? { color: 'rgba(245,241,234,0.65)' } : {}}>
+                {g.label}
+              </div>
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                {g.items.map((i) => (
+                  <span
+                    key={i}
+                    className="text-[12px] font-ui rounded-full px-2.5 py-1"
+                    style={{
+                      border: g.color === 'tile-ink'
+                        ? '1px solid rgba(245,241,234,0.2)'
+                        : '1px solid rgba(26,23,20,0.15)',
+                    }}
+                  >
+                    {i}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4 mt-4">
+          <div className="tile tile-cream min-h-[160px]">
+            <div className="kicker">Education</div>
+            <div className="mt-4 font-display italic text-2xl leading-tight">
+              MSc Information Technology (Business)
+            </div>
+            <div className="mt-1 font-ui text-sm text-[color:var(--muted)]">
+              Heriot-Watt University, Edinburgh · 2012 – 2013
+            </div>
+          </div>
+          <div className="tile tile-butter min-h-[160px]">
+            <div className="kicker">Certifications</div>
+            <ul className="mt-4 font-ui text-[14px] space-y-1.5">
+              <li>AWS Certified Machine Learning Engineer (Associate) — in progress</li>
+              <li>Google Cloud Generative AI — Vertex AI, Prompt Design, GSP519</li>
+              <li>Microsoft Certified: Introduction to Programming Using Python (MTA)</li>
+              <li>Python with Data Science — Grras Solution Pvt.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -708,21 +640,63 @@ function CtaFooter() {
   );
 }
 
-// ---------- APP ----------
+// ===========================================================
+// FOOTER
+// ===========================================================
+function Footer() {
+  return (
+    <section id="contact" className="relative px-4 md:px-8 pb-10 pt-10 md:pt-20 bg-[color:var(--paper-2)]">
+      <div className="max-w-7xl mx-auto">
+        <div className="tile tile-ink min-h-[360px] flex flex-col justify-between">
+          <div>
+            <div className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Contact</div>
+            <h2 className="mt-4 font-display italic text-4xl md:text-6xl leading-[0.95] tracking-tight text-[color:var(--paper)]">
+              Let’s talk.
+            </h2>
+            <p className="mt-4 font-ui text-white/70 max-w-lg leading-relaxed">
+              Email or LinkedIn. I reply the same day. Open to hybrid London or fully remote
+              AI Engineer roles, and to conversations about interesting problems.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 mt-8">
+            <a href="mailto:navendra8@gmail.com" className="bg-[color:var(--paper)] text-[color:var(--ink)] rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 hover:bg-white transition-colors">
+              <Mail className="h-4 w-4" /> navendra8@gmail.com
+            </a>
+            <a href="https://linkedin.com/in/navendra-singh" target="_blank" rel="noreferrer" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-white/20 text-[color:var(--paper)] hover:bg-white/5 transition-colors">
+              <Linkedin className="h-4 w-4" /> LinkedIn
+            </a>
+            <a href="https://github.com/Navendra8" target="_blank" rel="noreferrer" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-white/20 text-[color:var(--paper)] hover:bg-white/5 transition-colors">
+              <Github className="h-4 w-4" /> GitHub
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[color:var(--muted)] font-ui text-xs">
+          <div>Newcastle, UK · © 2026 Navendra Singh</div>
+          <div className="flex gap-5">
+            <a href="mailto:navendra8@gmail.com" className="hover:text-[color:var(--ink)]">Email</a>
+            <a href="https://linkedin.com/in/navendra-singh" className="hover:text-[color:var(--ink)]">LinkedIn</a>
+            <a href="https://github.com/Navendra8" className="hover:text-[color:var(--ink)]">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ===========================================================
+// APP
+// ===========================================================
 export default function App() {
   return (
-    <div className="bg-black">
-      <div className="relative z-10">
-        <Navbar />
-        <Hero />
-        <div className="bg-black">
-          <DataPilot />
-          <Work />
-          <Philosophy />
-          <Experience />
-          <CtaFooter />
-        </div>
-      </div>
+    <div className="min-h-screen">
+      <Navbar />
+      <HeroBento />
+      <DataPilotDeep />
+      <AlsoShipped />
+      <Experience />
+      <SkillsEdu />
+      <Footer />
     </div>
   );
 }
