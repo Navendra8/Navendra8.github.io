@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  ArrowUpRight, ArrowRight, Mail, Github, Linkedin, MapPin, Check,
-  Sparkles, Database, Shield, Terminal, Zap,
-} from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Mail, Github, Linkedin, Check } from 'lucide-react';
 
 // ===========================================================
-// NAVBAR — minimal pill, top-right
+// NAV
 // ===========================================================
 function Navbar() {
   return (
     <nav className="fixed top-4 inset-x-0 z-50 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 font-display italic text-xl text-[color:var(--ink)]">
-          <span>Navendra Singh</span>
+      <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <a href="#top" className="font-display italic text-xl text-[color:var(--ink)]">
+          Navendra Singh
         </a>
         <div className="hidden md:flex items-center gap-1 bg-white/80 backdrop-blur-md rounded-full px-1.5 py-1 shadow-sm border border-black/5">
           {[
@@ -39,41 +36,7 @@ function Navbar() {
 }
 
 // ===========================================================
-// HERO TILE — the big one, spans two columns
-// ===========================================================
-function HeroTile() {
-  return (
-    <div className="tile tile-cream lg:col-span-2 lg:row-span-2 min-h-[520px] flex flex-col justify-between">
-      <div>
-        <div className="flex items-center gap-2">
-          <span className="status-dot w-2 h-2 rounded-full bg-emerald-600" />
-          <span className="kicker">Available · Hybrid London or fully remote</span>
-        </div>
-        <h1 className="mt-8 font-display italic text-[2.75rem] md:text-[3.5rem] lg:text-[4.25rem] leading-[0.95] tracking-tight text-[color:var(--ink)]">
-          I build <span className="not-italic">production</span><br />
-          LLM systems on<br />
-          <span className="text-[color:var(--tile-terracotta)]">enterprise data.</span>
-        </h1>
-        <p className="mt-6 text-[color:var(--muted)] font-ui text-base md:text-lg leading-relaxed max-w-lg">
-          AI Engineer inside a 400-person regulated manufacturer
-          (aerospace, defence, medical). Eight-plus years across Python, SQL,
-          and cloud data engineering. Builder of DataPilot.
-        </p>
-      </div>
-      <div className="flex flex-wrap items-center gap-3 mt-8">
-        <a href="#datapilot" className="bg-[color:var(--ink)] text-[color:var(--paper)] rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 hover:bg-black/80 transition-colors">
-          See DataPilot <ArrowRight className="h-4 w-4" />
-        </a>
-        <a href="mailto:navendra8@gmail.com" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-black/15 hover:bg-black/5 transition-colors">
-          <Mail className="h-4 w-4" /> Say hi
-        </a>
-      </div>
-    </div>
-  );
-}
-
-// ===========================================================
-// DATAPILOT MINI-DEMO TILE — animated Expert/Tester loop
+// DATAPILOT LIVE DEMO (the one box that earns its keep)
 // ===========================================================
 function DataPilotDemo() {
   const queries = [
@@ -91,12 +54,10 @@ function DataPilotDemo() {
     },
   ];
 
-  const steps = ['typing', 'expert', 'tester', 'done'];
   const [qIdx, setQIdx] = useState(0);
   const [step, setStep] = useState('typing');
   const [typed, setTyped] = useState('');
 
-  // Type the natural-language query out
   useEffect(() => {
     if (step !== 'typing') return;
     const target = queries[qIdx].nl;
@@ -109,8 +70,8 @@ function DataPilotDemo() {
   }, [step, typed, qIdx]);
 
   useEffect(() => {
-    if (step === 'expert')  { const t = setTimeout(() => setStep('tester'), 1100); return () => clearTimeout(t); }
-    if (step === 'tester')  { const t = setTimeout(() => setStep('done'),   1100); return () => clearTimeout(t); }
+    if (step === 'expert') { const t = setTimeout(() => setStep('tester'), 1100); return () => clearTimeout(t); }
+    if (step === 'tester') { const t = setTimeout(() => setStep('done'), 1100); return () => clearTimeout(t); }
     if (step === 'done') {
       const t = setTimeout(() => {
         setTyped('');
@@ -124,11 +85,9 @@ function DataPilotDemo() {
   const q = queries[qIdx];
 
   return (
-    <div className="tile tile-ink lg:col-span-2 lg:row-span-2 min-h-[520px] flex flex-col">
+    <div className="tile tile-ink min-h-[520px] flex flex-col">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Flagship · DataPilot</span>
-        </div>
+        <span className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Live · DataPilot</span>
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-[color:var(--tile-rose)]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[color:var(--tile-butter)]" />
@@ -136,11 +95,10 @@ function DataPilotDemo() {
         </div>
       </div>
 
-      <h2 className="mt-4 font-display italic text-3xl md:text-4xl leading-[1.05] text-[color:var(--paper)]">
+      <h3 className="mt-4 font-display italic text-3xl md:text-4xl leading-[1.05] text-[color:var(--paper)]">
         Natural language in.<br />Validated SQL out.
-      </h2>
+      </h3>
 
-      {/* Prompt input */}
       <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
         <div className="kicker" style={{ color: 'rgba(245,241,234,0.5)' }}>Prompt</div>
         <div className="mt-2 font-ui text-[color:var(--paper)] text-base min-h-[1.5em]">
@@ -148,50 +106,30 @@ function DataPilotDemo() {
         </div>
       </div>
 
-      {/* Expert → Tester pipeline */}
       <div className="mt-4 grid grid-cols-2 gap-3">
-        <AgentPill
-          label="Expert agent"
-          sub="Generates SQL"
-          active={step === 'expert'}
-          done={['tester', 'done'].includes(step)}
-        />
-        <AgentPill
-          label="Tester agent"
-          sub="Validates & retries"
-          active={step === 'tester'}
-          done={step === 'done'}
-        />
+        <AgentPill label="Expert agent" sub="Generates SQL" active={step === 'expert'} done={['tester','done'].includes(step)} />
+        <AgentPill label="Tester agent" sub="Validates & retries" active={step === 'tester'} done={step === 'done'} />
       </div>
 
-      {/* SQL output */}
       <div className="mt-4 flex-1 rounded-2xl border border-white/10 bg-black/40 p-4 overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="kicker" style={{ color: 'rgba(245,241,234,0.5)' }}>SQL</div>
           <AnimatePresence>
             {step === 'done' && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex items-center gap-1.5 text-[11px] font-ui text-emerald-400"
-              >
-                <Check className="h-3.5 w-3.5" />
-                Validated · &lt; 5s
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                className="flex items-center gap-1.5 text-[11px] font-ui text-emerald-400">
+                <Check className="h-3.5 w-3.5" /> Validated · &lt; 5s
               </motion.div>
             )}
           </AnimatePresence>
         </div>
         <AnimatePresence mode="wait">
           {(step === 'tester' || step === 'done') ? (
-            <motion.pre
-              key={qIdx + step}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
+            <motion.pre key={qIdx + step} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="mt-2 font-mono text-[12.5px] leading-relaxed text-emerald-200/90 whitespace-pre-wrap"
-            >{q.sql}</motion.pre>
+              className="mt-2 font-mono text-[12.5px] leading-relaxed text-emerald-200/90 whitespace-pre-wrap">
+              {q.sql}
+            </motion.pre>
           ) : (
             <div className="mt-2 font-mono text-[12.5px] text-white/30">— awaiting generation —</div>
           )}
@@ -202,8 +140,16 @@ function DataPilotDemo() {
 }
 
 function AgentPill({ label, sub, active, done }) {
-  const bg = done ? 'bg-emerald-500/20 border-emerald-400/40' : active ? 'bg-[color:var(--tile-terracotta)]/20 border-[color:var(--tile-terracotta)]/60' : 'bg-white/5 border-white/10';
-  const icon = done ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : active ? <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--tile-terracotta)] status-dot" /> : <span className="w-1.5 h-1.5 rounded-full bg-white/30" />;
+  const bg = done
+    ? 'bg-emerald-500/20 border-emerald-400/40'
+    : active
+    ? 'bg-[color:var(--tile-terracotta)]/20 border-[color:var(--tile-terracotta)]/60'
+    : 'bg-white/5 border-white/10';
+  const icon = done
+    ? <Check className="h-3.5 w-3.5 text-emerald-400" />
+    : active
+    ? <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--tile-terracotta)] status-dot" />
+    : <span className="w-1.5 h-1.5 rounded-full bg-white/30" />;
   return (
     <div className={`rounded-2xl border px-4 py-3 transition-colors ${bg}`}>
       <div className="flex items-center gap-2">
@@ -216,120 +162,50 @@ function AgentPill({ label, sub, active, done }) {
 }
 
 // ===========================================================
-// SMALLER TILES
+// HERO — editorial two-column. Type on left, demo on right.
 // ===========================================================
-
-function StatTile({ value, label, color }) {
+function Hero() {
   return (
-    <div className={`tile ${color} min-h-[200px] flex flex-col justify-between`}>
-      <div className="kicker">{label}</div>
-      <div className="font-display italic text-[5rem] leading-none">{value}</div>
-    </div>
-  );
-}
-
-function UsersTile() {
-  return (
-    <div className="tile tile-terracotta min-h-[200px] flex flex-col justify-between">
-      <div className="kicker">Live Users</div>
-      <div>
-        <div className="font-display italic text-[5rem] leading-none">150+</div>
-        <div className="mt-2 font-ui text-sm leading-snug">
-          non-technical staff in Sales, Ops, and Finance querying live data in plain English.
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AccuracyTile() {
-  return (
-    <div className="tile tile-sage min-h-[200px] flex flex-col justify-between">
-      <div className="kicker">First-pass accuracy</div>
-      <div>
-        <div className="font-display italic text-[5rem] leading-none">~90%</div>
-        <div className="mt-2 font-ui text-sm leading-snug">
-          via the Tester loop. Median latency under 5 seconds.
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LocationTile() {
-  return (
-    <div className="tile tile-cream min-h-[200px] flex flex-col justify-between">
-      <div className="kicker">Based in</div>
-      <div>
-        <div className="flex items-center gap-2">
-          <MapPin className="h-5 w-5" />
-          <span className="font-display italic text-3xl">Newcastle, UK</span>
-        </div>
-        <div className="mt-3 font-ui text-sm text-[color:var(--muted)]">
-          Open to hybrid London or fully remote roles.
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LearningTile() {
-  const items = ['AWS ML Engineer Associate', 'LangGraph workflows', 'RAG eval with RAGAS'];
-  return (
-    <div className="tile tile-lavender min-h-[200px] flex flex-col">
-      <div className="flex items-center gap-2">
-        <Sparkles className="h-4 w-4" />
-        <span className="kicker">Currently learning</span>
-      </div>
-      <ul className="mt-auto space-y-1.5">
-        {items.map((i) => (
-          <li key={i} className="font-display italic text-xl leading-tight">{i}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function SocialTile() {
-  const links = [
-    { label: 'GitHub', href: 'https://github.com/Navendra8', icon: Github },
-    { label: 'LinkedIn', href: 'https://linkedin.com/in/navendra-singh', icon: Linkedin },
-    { label: 'Email', href: 'mailto:navendra8@gmail.com', icon: Mail },
-  ];
-  return (
-    <div className="tile tile-ink min-h-[200px] flex flex-col justify-between">
-      <div className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Elsewhere</div>
-      <div className="grid grid-cols-3 gap-2">
-        {links.map(({ label, href, icon: Icon }) => (
-          <a key={label} href={href} target="_blank" rel="noreferrer"
-             className="rounded-xl border border-white/10 p-3 flex flex-col items-start gap-2 hover:bg-white/5 transition-colors">
-            <Icon className="h-4 w-4" />
-            <span className="font-ui text-xs">{label}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ===========================================================
-// HERO BENTO GRID
-// ===========================================================
-function HeroBento() {
-  return (
-    <section id="top" className="relative pt-24 md:pt-28 pb-10 px-4 md:px-8 paper-grain">
-      <div className="max-w-7xl mx-auto">
-        {/* 6-column grid on lg, stacks on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(200px,auto)] gap-4">
-          <HeroTile />
-          <DataPilotDemo />
-          <UsersTile />
-          <AccuracyTile />
-          <LocationTile />
-          <LearningTile />
-          <div className="lg:col-span-2">
-            <SocialTile />
+    <section id="top" className="relative pt-28 md:pt-36 pb-24 px-4 md:px-8 paper-grain">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
+        <div>
+          <div className="flex items-center gap-2 mb-8">
+            <span className="status-dot w-2 h-2 rounded-full bg-emerald-600" />
+            <span className="kicker">Available · Hybrid London or fully remote</span>
           </div>
+
+          <h1 className="font-display italic text-[2.75rem] md:text-[4rem] lg:text-[5.25rem] leading-[0.92] tracking-tight text-[color:var(--ink)]">
+            Production <span className="not-italic">LLM</span> systems<br />
+            on <span className="text-[color:var(--tile-terracotta)]">enterprise data</span>.
+          </h1>
+
+          <p className="mt-8 text-[color:var(--ink-2)] font-ui text-base md:text-lg leading-relaxed max-w-xl">
+            AI Engineer inside a 400-person regulated manufacturer (aerospace, defence, medical).
+            Builder of <em className="font-display italic">DataPilot</em> — a text-to-SQL agent with a
+            self-correcting Expert / Tester loop, serving 150+ business users against live Oracle IFS
+            and SQL Server.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a href="#datapilot" className="bg-[color:var(--ink)] text-[color:var(--paper)] rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 hover:bg-black/80 transition-colors">
+              See DataPilot <ArrowRight className="h-4 w-4" />
+            </a>
+            <a href="mailto:navendra8@gmail.com" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-black/15 hover:bg-black/5 transition-colors">
+              <Mail className="h-4 w-4" /> Say hi
+            </a>
+          </div>
+
+          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 text-[color:var(--muted)] font-ui text-sm">
+            <span>Newcastle, UK</span>
+            <span className="w-1 h-1 rounded-full bg-[color:var(--muted)]" />
+            <span>8+ years in data</span>
+            <span className="w-1 h-1 rounded-full bg-[color:var(--muted)]" />
+            <span>Python · SQL · Claude / GPT · MCP</span>
+          </div>
+        </div>
+
+        <div>
+          <DataPilotDemo />
         </div>
       </div>
     </section>
@@ -337,68 +213,61 @@ function HeroBento() {
 }
 
 // ===========================================================
-// DATAPILOT DEEP-DIVE — below the fold
+// DATAPILOT — flowing editorial deep-dive, not boxes
 // ===========================================================
 function DataPilotDeep() {
-  const cards = [
-    {
-      icon: Zap,
-      color: 'tile-butter',
-      label: 'Architecture',
-      body: 'Expert agent generates SQL from schema-aware prompts. Tester agent validates syntax, executes against a sandboxed read replica, inspects result shape, and loops corrections back before surfacing output.',
-    },
-    {
-      icon: Terminal,
-      color: 'tile-sage',
-      label: 'Why this pattern',
-      body: 'Expert / Tester over single-shot and over full ReAct. Single-shot fails quietly on schema edge cases. ReAct burns tokens on reasoning better expressed as a deterministic validation step. The loop closes the accuracy gap without paying ReAct’s cost.',
-    },
-    {
-      icon: Shield,
-      color: 'tile-rose',
-      label: 'Guardrails',
-      body: 'Read-only enforcement at the connection layer, row limits, query-timeout fallback, graceful degradation when the Tester can’t validate in budget. Schema snapshots versioned so prompt and schema changes are auditable.',
-    },
-    {
-      icon: Database,
-      color: 'tile-blue',
-      label: 'Stack',
-      body: 'Python · Streamlit · Claude and GPT APIs (model-agnostic at the prompt layer) · Oracle IFS · SQL Server · custom logging for query telemetry and performance monitoring.',
-    },
-  ];
-
   return (
-    <section id="datapilot" className="relative py-20 md:py-28 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-end justify-between gap-6 flex-wrap mb-10">
-          <div>
-            <div className="kicker text-[color:var(--muted)]">Flagship Project</div>
-            <h2 className="mt-3 font-display italic text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight max-w-3xl">
-              A text-to-SQL agent with a self-correcting Expert / Tester loop.
-            </h2>
-          </div>
-          <div className="text-[color:var(--muted)] font-ui text-sm max-w-sm">
-            Serves nearly half of a 400-person business across Sales, Ops, and Finance.
-            Running in production since 2024.
-          </div>
+    <section id="datapilot" className="relative py-24 md:py-32 px-4 md:px-8 bg-[color:var(--paper-2)]">
+      <div className="max-w-3xl mx-auto">
+        <div className="kicker text-[color:var(--muted)]">Flagship Project</div>
+        <h2 className="mt-3 font-display italic text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
+          DataPilot
+        </h2>
+        <p className="mt-4 font-display italic text-2xl md:text-3xl text-[color:var(--muted)] leading-tight max-w-2xl">
+          A text-to-SQL agent with a self-correcting Expert / Tester loop.
+        </p>
+
+        {/* Inline stat row — numbers inline, not in boxes */}
+        <div className="mt-12 grid grid-cols-3 gap-8 hairline pt-8 pb-8 border-b border-black/10">
+          <Inline stat="150+" label="business users in Sales, Ops, Finance" />
+          <Inline stat="~90%" label="first-pass SQL accuracy" />
+          <Inline stat={<>&lt;5s</>} label="median query latency" />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          {cards.map(({ icon: Icon, color, label, body }) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5 }}
-              className={`tile ${color} min-h-[220px] flex flex-col`}
-            >
-              <div className="flex items-center gap-2">
-                <Icon className="h-4 w-4" />
-                <span className="kicker">{label}</span>
-              </div>
-              <p className="mt-5 font-ui text-[15px] leading-relaxed">{body}</p>
-            </motion.div>
+        {/* Running copy */}
+        <div className="mt-14 space-y-10 text-[color:var(--ink-2)] font-ui text-[17px] leading-[1.75]">
+          <Prose label="What it does">
+            Lets 150–200 non-technical users across Sales, Ops, and Finance query live Oracle IFS and
+            SQL Server data in natural language — nearly half of a 400-person business. Running in
+            production since 2024.
+          </Prose>
+
+          <Prose label="Architecture">
+            Two-agent system. An <strong className="text-[color:var(--ink)]">Expert</strong> agent generates
+            SQL from schema-aware prompts; a <strong className="text-[color:var(--ink)]">Tester</strong> agent
+            validates syntax, executes against a sandboxed read replica, inspects result shape, and
+            loops corrections back before surfacing output.
+          </Prose>
+
+          <Prose label="Why this pattern">
+            Expert / Tester over single-shot generation and over a full ReAct loop. Single-shot fails
+            quietly on schema edge cases; ReAct burns tokens on reasoning that is better expressed as a
+            deterministic validation step. The Tester loop closes the accuracy gap where it matters —
+            valid SQL against a real schema — without paying ReAct’s latency and cost.
+          </Prose>
+
+          <Prose label="Guardrails">
+            Read-only enforcement at the connection layer. Row limits. Query-timeout fallback.
+            Graceful degradation when the Tester can’t validate inside the retry budget. Schema
+            snapshots versioned so prompt changes and schema changes are auditable.
+          </Prose>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-black/10 flex flex-wrap gap-2">
+          {['Python','Streamlit','Claude API','GPT API','Oracle IFS','SQL Server','Query telemetry'].map(t => (
+            <span key={t} className="text-[12px] font-mono text-[color:var(--muted)] border border-black/15 rounded-full px-2.5 py-1">
+              {t}
+            </span>
           ))}
         </div>
       </div>
@@ -406,71 +275,105 @@ function DataPilotDeep() {
   );
 }
 
+function Inline({ stat, label }) {
+  return (
+    <div>
+      <div className="font-display italic text-[3rem] md:text-[3.5rem] leading-none text-[color:var(--tile-terracotta)]">
+        {stat}
+      </div>
+      <div className="mt-2 font-ui text-[13px] leading-snug text-[color:var(--muted)]">{label}</div>
+    </div>
+  );
+}
+
+function Prose({ label, children }) {
+  return (
+    <div className="grid md:grid-cols-[140px_1fr] gap-3 md:gap-10">
+      <div className="kicker text-[color:var(--muted)] pt-1.5">{label}</div>
+      <p>{children}</p>
+    </div>
+  );
+}
+
 // ===========================================================
-// ALSO SHIPPED
+// ALSO SHIPPED — typographic list, not cards
 // ===========================================================
 function AlsoShipped() {
   const items = [
     {
       n: '01',
       title: 'Harwin AI Insider',
-      body: '24-week internal LLM enablement platform serving all 400 staff. Measurable increase in AI-tool adoption, drop in ad-hoc data requests.',
+      body: '24-week internal LLM enablement platform serving all 400 staff. Measurable increase in AI-tool adoption and a drop in ad-hoc data requests.',
       href: 'https://harwin-1.github.io/harwin-ai-insider/',
-      tags: ['Python pipeline', 'HTML / CSS', 'GitHub Pages', 'Enablement'],
+      tags: ['Python pipeline', 'HTML / CSS', 'GitHub Pages'],
     },
     {
       n: '02',
       title: 'MCP Server for Claude Desktop',
-      body: 'Custom Anthropic MCP server exposing the MySQL warehouse as tools inside Claude Desktop. Conversational access to pipeline and operational data without opening a BI tool.',
+      body: 'Custom Anthropic MCP server exposing the MySQL warehouse as tools inside Claude Desktop. Leadership gets conversational access to pipeline and operational data without opening a BI tool.',
       tags: ['MCP', 'Claude Desktop', 'MySQL', 'Tool use'],
     },
     {
       n: '03',
       title: 'Data Platform Rebuild',
       body: 'AWS Data Lake + Snowflake analytical layer consolidating ERP, CRM, and distributor sources. Distributor POS rebuilt from a full-day Access/SQL/R/Python/Excel patchwork into a single Python pipeline under 5 minutes. One critical report cut from 24h to 30min.',
-      tags: ['AWS', 'Snowflake', 'Python', 'n8n', 'ETL'],
+      tags: ['AWS', 'Snowflake', 'Python', 'n8n'],
     },
   ];
 
   return (
-    <section id="work" className="relative py-20 md:py-28 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-10">
+    <section id="work" className="relative py-24 md:py-32 px-4 md:px-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-14">
           <div className="kicker text-[color:var(--muted)]">Also Shipped</div>
-          <h2 className="mt-3 font-display italic text-4xl md:text-5xl leading-[0.95] tracking-tight">
+          <h2 className="mt-3 font-display italic text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight max-w-2xl">
             DataPilot doesn’t exist in isolation.
           </h2>
+          <p className="mt-4 font-ui text-[color:var(--muted)] text-base max-w-xl">
+            It sits on a data platform and alongside the enablement work that taught 400 people how
+            to actually use AI at work.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4">
-          {items.map((p) => (
-            <motion.a
-              key={p.n}
-              href={p.href || '#'}
-              target={p.href ? '_blank' : undefined}
-              rel={p.href ? 'noreferrer' : undefined}
-              onClick={(e) => !p.href && e.preventDefault()}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5 }}
-              className={`tile tile-cream ${p.href ? 'tile-link' : ''} min-h-[300px] flex flex-col justify-between`}
-            >
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="font-display italic text-4xl text-[color:var(--muted)]">{p.n}</span>
-                  {p.href && <ArrowUpRight className="h-5 w-5 text-[color:var(--ink)]" />}
-                </div>
-                <h3 className="mt-4 font-display italic text-2xl leading-tight">{p.title}</h3>
-                <p className="mt-3 font-ui text-[14px] text-[color:var(--muted)] leading-relaxed">{p.body}</p>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-1.5">
-                {p.tags.map((t) => (
-                  <span key={t} className="text-[11px] font-ui border border-black/10 rounded-full px-2 py-0.5 text-[color:var(--ink-2)]">{t}</span>
-                ))}
-              </div>
-            </motion.a>
-          ))}
+        <div className="flex flex-col">
+          {items.map((p, i) => {
+            const Row = p.href ? 'a' : 'div';
+            return (
+              <motion.div
+                key={p.n}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className={`${i === 0 ? '' : 'border-t border-black/10'} py-10 first:pt-4`}
+              >
+                <Row
+                  href={p.href}
+                  target={p.href ? '_blank' : undefined}
+                  rel={p.href ? 'noreferrer' : undefined}
+                  className={`group grid md:grid-cols-[60px_1fr_auto] gap-4 md:gap-10 items-start ${p.href ? 'cursor-pointer' : ''}`}
+                >
+                  <div className="font-display italic text-4xl text-[color:var(--muted)]/60">{p.n}</div>
+                  <div>
+                    <h3 className="font-display italic text-3xl md:text-4xl leading-tight tracking-tight text-[color:var(--ink)] group-hover:text-[color:var(--tile-terracotta)] transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="mt-3 font-ui text-[15px] text-[color:var(--ink-2)] leading-relaxed max-w-2xl">
+                      {p.body}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {p.tags.map((t) => (
+                        <span key={t} className="text-[11px] font-mono text-[color:var(--muted)] border border-black/10 rounded-full px-2 py-0.5">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                  {p.href && (
+                    <ArrowUpRight className="hidden md:block h-6 w-6 text-[color:var(--muted)] group-hover:text-[color:var(--tile-terracotta)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all mt-2" />
+                  )}
+                </Row>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -478,7 +381,7 @@ function AlsoShipped() {
 }
 
 // ===========================================================
-// EXPERIENCE — list with hover reveal
+// EXPERIENCE — editorial timeline with hairlines
 // ===========================================================
 function Experience() {
   const roles = [
@@ -520,11 +423,11 @@ function Experience() {
   ];
 
   return (
-    <section id="experience" className="relative py-20 md:py-28 px-4 md:px-8 bg-[color:var(--paper-2)]">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-10">
+    <section id="experience" className="relative py-24 md:py-32 px-4 md:px-8 bg-[color:var(--paper-2)]">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-14">
           <div className="kicker text-[color:var(--muted)]">Experience</div>
-          <h2 className="mt-3 font-display italic text-4xl md:text-5xl leading-[0.95] tracking-tight">
+          <h2 className="mt-3 font-display italic text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
             Eight-plus years. SQL to agents.
           </h2>
         </div>
@@ -533,13 +436,13 @@ function Experience() {
           {roles.map((r, i) => (
             <motion.div
               key={r.company}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="group grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 md:gap-8 py-6 hairline first:border-t-0 first:pt-2"
+              className={`${i === 0 ? '' : 'border-t border-black/10'} py-8 grid md:grid-cols-[170px_1fr] gap-4 md:gap-10`}
             >
-              <div className="font-ui text-xs md:text-sm text-[color:var(--muted)] tracking-wide pt-1">
+              <div className="font-ui text-sm text-[color:var(--muted)] tracking-wide pt-1">
                 {r.dates}
               </div>
               <div>
@@ -562,52 +465,42 @@ function Experience() {
 }
 
 // ===========================================================
-// SKILLS + EDU — two-column bento
+// SKILLS + EDU — typographic, category labels in margin
 // ===========================================================
 function SkillsEdu() {
   const groups = [
-    { label: 'AI & LLM Engineering', color: 'tile-ink',
-      items: ['Claude API', 'OpenAI API', 'Anthropic MCP', 'Expert / Tester loops', 'Prompt engineering', 'Structured outputs', 'Tool use', 'RAG', 'LLM evaluation', 'Guardrails', 'Token & cost optimisation', 'Query telemetry'] },
-    { label: 'Automation & Data Eng.', color: 'tile-cream',
-      items: ['n8n', 'Python', 'AWS Data Lake', 'Snowflake', 'ETL / ELT', 'Data modelling', 'EDI', 'Validation frameworks'] },
-    { label: 'Analytics & BI', color: 'tile-lavender',
-      items: ['SQL', 'Tableau', 'Power BI', 'QuickSight', 'Streamlit', 'KPI dashboards', 'GTM analytics'] },
-    { label: 'ML & Advanced Analytics', color: 'tile-sage',
-      items: ['Predictive modelling', 'Forecasting', 'Segmentation (k-means)', 'NLP / sentiment', 'Statistical analysis'] },
-    { label: 'Databases & Storage', color: 'tile-blue',
-      items: ['Snowflake', 'MySQL', 'MS SQL Server', 'Oracle IFS', 'MS Access'] },
-    { label: 'Collection & Integration', color: 'tile-rose',
-      items: ['Selenium', 'BeautifulSoup', 'Scrapy', 'REST APIs'] },
+    { label: 'AI & LLM', items: ['Claude API', 'OpenAI API', 'Anthropic MCP', 'Expert / Tester loops', 'Prompt engineering', 'Structured outputs', 'Tool use', 'RAG', 'LLM evaluation', 'Guardrails', 'Token & cost optimisation', 'Query telemetry'] },
+    { label: 'Automation & Data', items: ['n8n', 'Python', 'AWS Data Lake', 'Snowflake', 'ETL / ELT', 'Data modelling', 'EDI', 'Validation frameworks'] },
+    { label: 'Analytics & BI', items: ['SQL', 'Tableau', 'Power BI', 'QuickSight', 'Streamlit', 'KPI dashboards', 'GTM analytics'] },
+    { label: 'ML & Advanced', items: ['Predictive modelling', 'Forecasting', 'Segmentation (k-means)', 'NLP / sentiment', 'Statistical analysis'] },
+    { label: 'Databases', items: ['Snowflake', 'MySQL', 'MS SQL Server', 'Oracle IFS', 'MS Access'] },
+    { label: 'Integration', items: ['Selenium', 'BeautifulSoup', 'Scrapy', 'REST APIs'] },
   ];
 
   return (
-    <section className="relative py-20 md:py-28 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-10">
+    <section className="relative py-24 md:py-32 px-4 md:px-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-14">
           <div className="kicker text-[color:var(--muted)]">Toolkit</div>
-          <h2 className="mt-3 font-display italic text-4xl md:text-5xl leading-[0.95] tracking-tight">
+          <h2 className="mt-3 font-display italic text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
             How the work gets made.
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {groups.map((g) => (
-            <div key={g.label} className={`tile ${g.color} min-h-[180px]`}>
-              <div className="kicker" style={g.color === 'tile-ink' ? { color: 'rgba(245,241,234,0.65)' } : {}}>
+        <div className="flex flex-col">
+          {groups.map((g, i) => (
+            <div
+              key={g.label}
+              className={`${i === 0 ? '' : 'border-t border-black/10'} py-6 grid md:grid-cols-[170px_1fr] gap-4 md:gap-10 items-start`}
+            >
+              <div className="font-display italic text-xl text-[color:var(--muted)] pt-1">
                 {g.label}
               </div>
-              <div className="mt-5 flex flex-wrap gap-1.5">
-                {g.items.map((i) => (
-                  <span
-                    key={i}
-                    className="text-[12px] font-ui rounded-full px-2.5 py-1"
-                    style={{
-                      border: g.color === 'tile-ink'
-                        ? '1px solid rgba(245,241,234,0.2)'
-                        : '1px solid rgba(26,23,20,0.15)',
-                    }}
-                  >
-                    {i}
+              <div className="flex flex-wrap gap-x-5 gap-y-2 font-ui text-[15px] text-[color:var(--ink)]">
+                {g.items.map((item, idx) => (
+                  <span key={item} className="flex items-center gap-5">
+                    {item}
+                    {idx < g.items.length - 1 && <span className="text-[color:var(--muted)]/50">/</span>}
                   </span>
                 ))}
               </div>
@@ -615,22 +508,22 @@ function SkillsEdu() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 mt-4">
-          <div className="tile tile-cream min-h-[160px]">
-            <div className="kicker">Education</div>
-            <div className="mt-4 font-display italic text-2xl leading-tight">
+        <div className="mt-16 pt-10 border-t border-black/10 grid md:grid-cols-2 gap-12">
+          <div>
+            <div className="kicker text-[color:var(--muted)]">Education</div>
+            <div className="mt-3 font-display italic text-2xl md:text-3xl leading-tight">
               MSc Information Technology (Business)
             </div>
-            <div className="mt-1 font-ui text-sm text-[color:var(--muted)]">
+            <div className="mt-2 font-ui text-[15px] text-[color:var(--muted)]">
               Heriot-Watt University, Edinburgh · 2012 – 2013
             </div>
           </div>
-          <div className="tile tile-butter min-h-[160px]">
-            <div className="kicker">Certifications</div>
-            <ul className="mt-4 font-ui text-[14px] space-y-1.5">
+          <div>
+            <div className="kicker text-[color:var(--muted)]">Certifications</div>
+            <ul className="mt-3 font-ui text-[15px] text-[color:var(--ink-2)] space-y-2 leading-relaxed">
               <li>AWS Certified Machine Learning Engineer (Associate) — in progress</li>
               <li>Google Cloud Generative AI — Vertex AI, Prompt Design, GSP519</li>
-              <li>Microsoft Certified: Introduction to Programming Using Python (MTA)</li>
+              <li>Microsoft Certified: Introduction to Programming Using Python</li>
               <li>Python with Data Science — Grras Solution Pvt.</li>
             </ul>
           </div>
@@ -641,37 +534,33 @@ function SkillsEdu() {
 }
 
 // ===========================================================
-// FOOTER
+// FOOTER — simple, not a tile
 // ===========================================================
 function Footer() {
   return (
-    <section id="contact" className="relative px-4 md:px-8 pb-10 pt-10 md:pt-20 bg-[color:var(--paper-2)]">
-      <div className="max-w-7xl mx-auto">
-        <div className="tile tile-ink min-h-[360px] flex flex-col justify-between">
-          <div>
-            <div className="kicker" style={{ color: 'rgba(245,241,234,0.65)' }}>Contact</div>
-            <h2 className="mt-4 font-display italic text-4xl md:text-6xl leading-[0.95] tracking-tight text-[color:var(--paper)]">
-              Let’s talk.
-            </h2>
-            <p className="mt-4 font-ui text-white/70 max-w-lg leading-relaxed">
-              Email or LinkedIn. I reply the same day. Open to hybrid London or fully remote
-              AI Engineer roles, and to conversations about interesting problems.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 mt-8">
-            <a href="mailto:navendra8@gmail.com" className="bg-[color:var(--paper)] text-[color:var(--ink)] rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 hover:bg-white transition-colors">
-              <Mail className="h-4 w-4" /> navendra8@gmail.com
-            </a>
-            <a href="https://linkedin.com/in/navendra-singh" target="_blank" rel="noreferrer" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-white/20 text-[color:var(--paper)] hover:bg-white/5 transition-colors">
-              <Linkedin className="h-4 w-4" /> LinkedIn
-            </a>
-            <a href="https://github.com/Navendra8" target="_blank" rel="noreferrer" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-white/20 text-[color:var(--paper)] hover:bg-white/5 transition-colors">
-              <Github className="h-4 w-4" /> GitHub
-            </a>
-          </div>
+    <section id="contact" className="relative py-24 md:py-32 px-4 md:px-8 bg-[color:var(--paper-2)]">
+      <div className="max-w-5xl mx-auto">
+        <div className="kicker text-[color:var(--muted)]">Contact</div>
+        <h2 className="mt-4 font-display italic text-5xl md:text-7xl lg:text-[6.5rem] leading-[0.9] tracking-tight text-[color:var(--ink)] max-w-4xl">
+          Let’s <span className="text-[color:var(--tile-terracotta)]">talk</span>.
+        </h2>
+        <p className="mt-6 font-ui text-[color:var(--ink-2)] text-base md:text-lg max-w-xl leading-relaxed">
+          Email or LinkedIn. I reply the same day. Open to hybrid London or fully remote AI
+          Engineer roles, and to conversations about interesting problems.
+        </p>
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <a href="mailto:navendra8@gmail.com" className="bg-[color:var(--ink)] text-[color:var(--paper)] rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 hover:bg-black/80 transition-colors">
+            <Mail className="h-4 w-4" /> navendra8@gmail.com
+          </a>
+          <a href="https://linkedin.com/in/navendra-singh" target="_blank" rel="noreferrer" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-black/15 hover:bg-black/5 transition-colors">
+            <Linkedin className="h-4 w-4" /> LinkedIn
+          </a>
+          <a href="https://github.com/Navendra8" target="_blank" rel="noreferrer" className="rounded-full px-5 py-2.5 text-sm font-ui font-medium inline-flex items-center gap-1.5 border border-black/15 hover:bg-black/5 transition-colors">
+            <Github className="h-4 w-4" /> GitHub
+          </a>
         </div>
 
-        <div className="mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[color:var(--muted)] font-ui text-xs">
+        <div className="mt-24 pt-6 border-t border-black/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[color:var(--muted)] font-ui text-xs">
           <div>Newcastle, UK · © 2026 Navendra Singh</div>
           <div className="flex gap-5">
             <a href="mailto:navendra8@gmail.com" className="hover:text-[color:var(--ink)]">Email</a>
@@ -691,7 +580,7 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <HeroBento />
+      <Hero />
       <DataPilotDeep />
       <AlsoShipped />
       <Experience />
